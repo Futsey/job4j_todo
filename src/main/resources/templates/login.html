@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="utf-8">
@@ -18,6 +19,7 @@
 </head>
 
 <body>
+
 
 <div class="container">
 
@@ -39,16 +41,6 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" th:href="@{/newTask}">NEW task</a>
                     </li>
-                    <li class="nav-item position-absolute top-0 end-0">
-                        <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/loginPage}">
-                            <span th:text="${user.name}"></span>
-                            <span> | Войти</span>
-                        </a>
-                        <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
-                            <span th:text="${user.name}"></span>
-                            <span> | Выйти</span>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -56,11 +48,37 @@
 
     <div class="p-3">
         <div class="text-center bg-">
-            <h1 class="mt-5">JOB4J TODO list</h1>
+            <h1 class="mt-5">Авторизация</h1>
         </div>
     </div>
-
+    <div class="container pt-11">
+        <div class="row">
+            <div class="card" style="width: 100%">
+                <div class="card-body">
+                    <div th:if="${fail}" class="alert alert-danger" role="alert">
+                        Логин или пароль введены неверно!
+                    </div>
+                    <form th:action="@{/login}" method="POST">
+                        <div class="form-group">
+                            <label>Имя</label>
+                            <input type="text" class="form-control" name="имя">
+                        </div>
+                        <div class="form-group">
+                            <label>Почта</label>
+                            <input type="text" class="form-control" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label>Пароль</label>
+                            <input type="text" class="form-control" name="password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Войти</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>
+
 </html>

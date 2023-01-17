@@ -9,5 +9,6 @@
 		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
     <include file="scripts/001_dml_create_task.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/002_dml_create_user.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
