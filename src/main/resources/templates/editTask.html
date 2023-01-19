@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+
+  <title>JOB4J Todo</title>
+
+</head>
+
+<body>
+
+<div class="container">
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand text-info bg-dark" href="/index">JOB4J TODO</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search task" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/taskList}">TODO list</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/formAddTask}">NEW task</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/formTaskInfoDone}">Done list</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/formTaskInfoUnDone}">Undone list</a>
+          </li>
+          <li class="nav-item position-absolute top-0 end-0">
+            <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/loginPage}">
+              <span th:text="${user.name}"></span>
+              <span> | Войти</span>
+            </a>
+            <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
+              <span th:text="${user.name}"></span>
+              <span> | Выйти</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="p-3">
+    <div class="text-center">
+      <h1 class="mt-5">Editing Task</h1>
+    </div>
+  </div>
+
+  <div>
+
+    <table class="table table-hover table-bordered border-primary">
+      <thead>
+      <tr  class="table-active">
+        <th scope="col">Description</th>
+        <th scope="col">Status</th>
+        <th scope="col">Actions</th>
+      </tr>
+      </thead>
+
+      <form th:action="@{/editTask}" method="POST" th:object="${tasks}">
+        <input type="hidden" name="id" th:field="*{id}"/>
+        <td>
+          <input type="text" name="description" id="description" th:field="*{description}">
+        </td>
+
+        <td>
+          <select type="submit" class="form-control" th:field="*{done}">
+            <option th:value="1">DONE</option>
+            <option th:value="0" >UNDONE</option>
+          </select>
+        </td>
+
+        <td>
+          <div class="d-grid gap-2 mx-auto" th:action="@{|/deleteTask/*{id}|}">
+            <a type="button" class="btn btn-outline-danger">DELETE</a>
+          </div>
+        </td>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+
+      </form>
+    </table>
+
+    <div class="position-absolute end-50">
+      <a class="btn btn-outline-primary btn-lg" role="button" th:href="@{/formAddTask}">New Task</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

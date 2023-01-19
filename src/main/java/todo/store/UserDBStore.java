@@ -13,7 +13,7 @@ import java.util.Optional;
 public class UserDBStore {
 
     private final SessionFactory sf;
-    private static final String SELECT_ALL = "SELECT * FROM User";
+    private static final String SELECT_ALL = "FROM User";
     private static final String SELECT_WHERE_NAME = "FROM User WHERE name = :key";
     private static final String UPDATE = "UPDATE User SET name = :fname, email = :femail, "
             + "password = :fpassword WHERE id = :fId";
