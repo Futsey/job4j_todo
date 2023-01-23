@@ -20,6 +20,7 @@
 <body>
 
 <div class="container">
+
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand text-info bg-dark" href="/index">JOB4J TODO</a>
@@ -33,16 +34,16 @@
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/taskList}">TODO list</a>
+            <a class="nav-link active" aria-current="page" th:href="@{/tasks}">TODO list</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/formAddTask}">NEW task</a>
+            <a class="nav-link active" aria-current="page" th:href="@{/tasks/formAdd}">NEW task</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/formTaskInfoDone}">Done list</a>
+            <a class="nav-link active" aria-current="page" th:href="@{/tasks/formInfoDone}">Done list</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/formTaskInfoUnDone}">Undone list</a>
+            <a class="nav-link active" aria-current="page" th:href="@{/tasks/formInfoUnDone}">Undone list</a>
           </li>
           <li class="nav-item position-absolute top-0 end-0">
             <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/loginPage}">
@@ -59,25 +60,7 @@
     </div>
   </nav>
 
-  <div class="p-3">
-    <div class="text-center">
-      <h1 class="mt-5">Create Task</h1>
-    </div>
-  </div>
-
-  <div class="row pt-3">
-        <form th:action="@{/createTask}" method="POST" th:object="${task}">
-          <input type="hidden" name="id" value="0"/>
-          <div class="form-group">
-            <input type="text" class="form-control" name="description" id="description" th:placeholder="*{description}">
-          </div>
-          <div class="form-check">
-            <input type="checkbox" name="visible" class="form-check-input" id="visible">
-            <label class="form-check-label" for="visible">Опубликовать</label>
-          </div>
-          <button type="submit" class="btn btn-primary">Сохранить</button>
-        </form>
-  </div>
+  <h1 style="">DELETE FAILED</h1>
 
 </div>
 

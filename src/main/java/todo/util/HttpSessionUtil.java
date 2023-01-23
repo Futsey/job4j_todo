@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import todo.model.User;
 
-public class HttpSessionUtil {
+public final class HttpSessionUtil {
 
     private HttpSessionUtil() {
     }

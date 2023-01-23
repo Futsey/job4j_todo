@@ -33,16 +33,16 @@
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/taskList}">TODO list</a>
+            <a class="nav-link active" aria-current="page" th:href="@{/tasks}">TODO list</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/formAddTask}">NEW task</a>
+            <a class="nav-link active" aria-current="page" th:href="@{/tasks/formAdd}">NEW task</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/formTaskInfoDone}">Done list</a>
+            <a class="nav-link active" aria-current="page" th:href="@{/tasks/formInfoDone}">Done list</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/formTaskInfoUnDone}">Undone list</a>
+            <a class="nav-link active" aria-current="page" th:href="@{/tasks/formInfoUnDone}">Undone list</a>
           </li>
           <li class="nav-item position-absolute top-0 end-0">
             <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/loginPage}">
@@ -61,50 +61,25 @@
 
   <div class="p-3">
     <div class="text-center">
-      <h1 class="mt-5">Editing Task</h1>
+      <h1 class="mt-5">Create Task</h1>
     </div>
   </div>
 
-  <div>
-
-    <table class="table table-hover table-bordered border-primary">
-      <thead>
-      <tr  class="table-active">
-        <th scope="col">Description</th>
-        <th scope="col">Status</th>
-        <th scope="col">Actions</th>
-      </tr>
-      </thead>
-
-      <form th:action="@{/editTask}" method="POST" th:object="${tasks}">
-        <input type="hidden" name="id" th:field="*{id}"/>
-        <td>
-          <input type="text" name="description" id="description" th:field="*{description}">
-        </td>
-
-        <td>
-          <select type="submit" class="form-control" th:field="*{done}">
-            <option th:value="1">DONE</option>
-            <option th:value="0" >UNDONE</option>
-          </select>
-        </td>
-
-        <td>
-          <div class="d-grid gap-2 mx-auto" th:action="@{|/deleteTask/*{id}|}">
-            <a type="button" class="btn btn-outline-danger">DELETE</a>
+  <div class="row pt-3">
+        <form th:action="@{/tasks/create}" method="POST" th:object="${task}">
+          <input type="hidden" name="id" value="0"/>
+          <div class="form-group">
+            <input type="text" class="form-control" name="description" id="description" th:placeholder="*{description}">
           </div>
-        </td>
-
-        <button type="submit" class="btn btn-primary">Save</button>
-
-      </form>
-    </table>
-
-    <div class="position-absolute end-50">
-      <a class="btn btn-outline-primary btn-lg" role="button" th:href="@{/formAddTask}">New Task</a>
-    </div>
+          <div class="form-check">
+            <input type="checkbox" name="visible" class="form-check-input" id="visible">
+            <label class="form-check-label" for="visible">Опубликовать</label>
+          </div>
+          <button type="submit" class="btn btn-primary">Сохранить</button>
+        </form>
   </div>
 
 </div>
+
 </body>
 </html>

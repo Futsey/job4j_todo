@@ -33,16 +33,16 @@
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/taskList}">TODO list</a>
+            <a class="nav-link active" aria-current="page" th:href="@{/tasks}">TODO list</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/formAddTask}">NEW task</a>
+            <a class="nav-link active" aria-current="page" th:href="@{/tasks/formAdd}">NEW task</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/formTaskInfoDone}">Done list</a>
+            <a class="nav-link active" aria-current="page" th:href="@{/tasks/formInfoDone}">Done list</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/formTaskInfoUnDone}">Undone list</a>
+            <a class="nav-link active" aria-current="page" th:href="@{/tasks/formInfoUnDone}">Undone list</a>
           </li>
           <li class="nav-item position-absolute top-0 end-0">
             <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/loginPage}">
@@ -92,7 +92,7 @@
         <td th:text="${task.id}" />
 
         <td>
-          <a th:href="@{|/formTaskInfo/${task.id}|}">
+          <a th:href="@{|/formTask/${task.id}|}">
             <i class="fa fa-edit"></i>
             <span th:text="${task.description}"></span>
           </a>
@@ -115,7 +115,7 @@
     </table>
 
     <div class="position-absolute end-50">
-      <a class="btn btn-outline-primary btn-lg" role="button" th:href="@{/formAddTask}">New Task</a>
+      <a class="btn btn-outline-primary btn-lg" role="button" th:href="@{/formAdd}">New Task</a>
     </div>
 
   </div>

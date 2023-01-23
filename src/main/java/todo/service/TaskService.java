@@ -26,20 +26,20 @@ public class TaskService {
         return store.delete(id);
     }
 
-    public void update(Task task) {
-        store.update(task);
+    public boolean update(Task task) {
+        return store.update(task);
+    }
+
+    public boolean isDone(int id) {
+        return store.isDone(id);
     }
 
     public List<Task> findAll() {
         return store.findAll();
     }
 
-    public List<Task> findCompletedTasks() {
-        return store.findCompletedTasks();
-    }
-
-    public List<Task> findUncompletedTasks() {
-        return store.findUncompletedTasks();
+    public List<Task> sortTasks(boolean done) {
+        return store.sortTasks(done);
     }
 
     public Task findById(int id) {

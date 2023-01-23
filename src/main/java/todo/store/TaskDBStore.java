@@ -3,6 +3,8 @@ package todo.store;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import todo.model.Task;
 
@@ -13,10 +15,12 @@ import java.util.Optional;
 public class TaskDBStore {
 
     private final SessionFactory sf;
+    private static final Logger LOG = LoggerFactory.getLogger(TaskDBStore.class.getName());
     private static final String SELECT_ALL = "FROM Task";
     private static final String SELECT_COMPLETED = "FROM Task WHERE done IS TRUE";
     private static final String SELECT_UNCOMPLETED = "FROM Task WHERE done IS NOT TRUE";
     private static final String UPDATE = "UPDATE Task SET description = :fdescription, done = :fdone WHERE id = :fId";
+    private static final String UPDATE_DONE_STATE = "UPDATE Task SET done = true WHERE id = :fId";
     private static final String DELETE = "DELETE Task WHERE id = :fId";
 
     public TaskDBStore(SessionFactory sf) {
@@ -33,6 +37,7 @@ public class TaskDBStore {
             notNulltask = Optional.of(task);
             System.out.println(notNulltask);
         } catch (Exception e) {
+            LOG.error("Exception: TaskDBStore{ add() }", e);
             session.getTransaction().rollback();
         } finally {
             session.close();
@@ -48,17 +53,14 @@ public class TaskDBStore {
         return allTaskList;
     }
 
-    public List<Task> findCompletedTasks() {
+    public List<Task> sortTasks(boolean done) {
         Session session = sf.openSession();
-        Query<Task> query = session.createQuery(SELECT_COMPLETED, Task.class);
-        List<Task> allTaskList = query.list();
-        session.close();
-        return allTaskList;
-    }
-
-    public List<Task> findUncompletedTasks() {
-        Session session = sf.openSession();
-        Query<Task> query = session.createQuery(SELECT_UNCOMPLETED, Task.class);
+        Query<Task> query;
+        if (done) {
+            query = session.createQuery(SELECT_COMPLETED, Task.class);
+        } else {
+            query = session.createQuery(SELECT_UNCOMPLETED, Task.class);
+        }
         List<Task> allTaskList = query.list();
         session.close();
         return allTaskList;
@@ -76,6 +78,25 @@ public class TaskDBStore {
                     .executeUpdate() != 0;
             session.getTransaction().commit();
         } catch (Exception e) {
+            LOG.error("Exception: TaskDBStore{ update() }", e);
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+        return rsl;
+    }
+
+    public boolean isDone(int id) {
+        boolean rsl = false;
+        Session session = sf.openSession();
+        try {
+            session.beginTransaction();
+            rsl = session.createQuery(UPDATE_DONE_STATE)
+                    .setParameter("fId", id)
+                    .executeUpdate() != 0;
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            LOG.error("Exception: TaskDBStore{ isDone() }", e);
             session.getTransaction().rollback();
         } finally {
             session.close();
@@ -92,9 +113,8 @@ public class TaskDBStore {
                     .setParameter("fId", id)
                     .executeUpdate() != 0;
             session.getTransaction().commit();
-            System.out.println("DELETED");
         } catch (Exception e) {
-            System.out.println("ХРЕН!!!!!");
+            LOG.error("Exception: TaskDBStore{ delete() }", e);
             session.getTransaction().rollback();
         } finally {
             session.close();

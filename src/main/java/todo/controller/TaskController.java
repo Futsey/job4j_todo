@@ -6,86 +6,101 @@ import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import todo.model.Task;
 import todo.service.TaskService;
 
-import java.io.IOException;
+import java.util.Optional;
 
 import static todo.util.HttpSessionUtil.setGuest;
 
 @ThreadSafe
 @Controller
 @AllArgsConstructor
-
+@RequestMapping("/tasks")
 public class TaskController {
 
     private final TaskService taskService;
 
-    @GetMapping("/taskList")
-    public String taskList(Model model, HttpSession session) {
+    @GetMapping("")
+    public String list(Model model, HttpSession session) {
         model.addAttribute("tasks", taskService.findAll());
         setGuest(model, session);
-        return "taskList";
+        return "tasks/list";
     }
 
-    @GetMapping("/formTaskInfo/{taskId}")
+    @GetMapping("/formInfo/{taskId}")
     public String formTaskInfo(Model model, @PathVariable("taskId") int id, HttpSession session) {
         model.addAttribute("task", taskService.findById(id));
         setGuest(model, session);
-        return "taskInfo";
+        return "tasks/info";
     }
 
-    @PostMapping("/taskInfo")
-    public String taskInfo(@ModelAttribute Task task) {
-        taskService.findById(task.getId());
-        return "redirect:/taskList";
-    }
-
-    @GetMapping("/formTaskInfoDone")
-    public String formTaskInfoDone(Model model, HttpSession session) {
-        model.addAttribute("tasks", taskService.findCompletedTasks());
+    @GetMapping("/formInfoDone")
+    public String formTaskInfoDone(Model model, @ModelAttribute Task task, HttpSession session) {
+        model.addAttribute("tasks", taskService.sortTasks(true));
         setGuest(model, session);
-        return "taskInfoDone";
+        return "tasks/infoDone";
     }
 
-    @GetMapping("/formTaskInfoUnDone")
+    @GetMapping("/formInfoUnDone")
     public String formTaskInfoUnDone(Model model, HttpSession session) {
-        model.addAttribute("tasks", taskService.findUncompletedTasks());
+        model.addAttribute("tasks", taskService.sortTasks(false));
         setGuest(model, session);
-        return "taskInfoUnDone";
+        return "tasks/infoUnDone";
     }
 
-    @GetMapping("/formUpdateTask/{taskId}")
+    @GetMapping("/formUpdate/{taskId}")
     public String formUpdateTask(Model model, @PathVariable("taskId") int id, HttpSession session) {
         model.addAttribute("tasks", taskService.findById(id));
         setGuest(model, session);
-        return "editTask";
+        return "tasks/edit";
     }
 
-    @PostMapping("/editTask")
+    @PostMapping("/edit")
     public String editTask(@ModelAttribute Task task) {
-        taskService.update(task);
-        return "redirect:/taskList";
+        String rsl = "redirect:/tasks";
+        if (!taskService.update(task)) {
+            rsl = "redirect:/tasks/editFail";
+        }
+        return rsl;
     }
 
-    @GetMapping("/formAddTask")
+    @GetMapping("/execution/{taskId}")
+    public String editTaskExecution(@PathVariable("taskId") int id) {
+        String rsl = "redirect:/tasks";
+        if (!taskService.isDone(id)) {
+            rsl = "redirect:/executionFail";
+        }
+        return rsl;
+    }
+
+    @GetMapping("/formAdd")
     public String addTask(Model model, HttpSession session) {
         model.addAttribute("task",
                 new Task());
         setGuest(model, session);
-        return "addTask";
+        return "tasks/add";
     }
 
-    @PostMapping("/createTask")
+    @PostMapping("/create")
     public String createTask(@ModelAttribute Task task) {
-        taskService.add(task);
-        return "redirect:/taskList";
+        Optional<Task> nonNullTask = Optional.ofNullable(task);
+        String rsl;
+        if (nonNullTask.isEmpty()) {
+            rsl = "redirect:/createFail";
+        } else {
+            taskService.add(task);
+            rsl = "redirect:/tasks";
+        }
+        return rsl;
     }
 
-    @GetMapping("/deleteTask/{taskId}")
+    @GetMapping("/delete/{taskId}")
     public String deleteTask(@PathVariable("taskId") int id) {
-        taskService.delete(id);
-        return "redirect:/taskList";
+        String rsl = "redirect:/tasks";
+        if (!taskService.delete(id)) {
+            rsl = "redirect:/deleteFail";
+        }
+        return rsl;
     }
 }
