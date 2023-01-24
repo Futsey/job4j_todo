@@ -50,23 +50,13 @@
                     <a class="nav-link active" aria-current="page" th:href="@{/tasks}">TODO list</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/tasks/formAdd}">NEW task</a>
+                    <a class="nav-link active" aria-current="page" th:href="@{/tasks/add}">NEW task</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/tasks/formInfoDone}">Done list</a>
+                    <a class="nav-link active" aria-current="page" th:href="@{/tasks/done}">Done list</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/tasks/formInfoUnDone}">Undone list</a>
-                </li>
-                <li class="nav-item position-absolute top-0 end-0">
-                    <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/loginPage}">
-                        <span th:text="${user.name}"></span>
-                        <span> | Войти</span>
-                    </a>
-                    <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
-                        <span th:text="${user.name}"></span>
-                        <span> | Выйти</span>
-                    </a>
+                    <a class="nav-link active" aria-current="page" th:href="@{/tasks/unDone}">Undone list</a>
                 </li>
             </ul>
         </div>
@@ -75,7 +65,7 @@
 
 <div>
     <a href="/index">
-        <span class="failedMessage">Registration success</span>
+        <span class="successMessage">Registration success</span>
     </a>
 </div>
 

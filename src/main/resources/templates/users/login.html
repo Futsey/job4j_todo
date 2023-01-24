@@ -39,13 +39,13 @@
                         <a class="nav-link active" aria-current="page" th:href="@{/tasks}">TODO list</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" th:href="@{/tasks/formAdd}">NEW task</a>
+                        <a class="nav-link active" aria-current="page" th:href="@{/tasks/add}">NEW task</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" th:href="@{/tasks/formInfoDone}">Done list</a>
+                        <a class="nav-link active" aria-current="page" th:href="@{/tasks/done}">Done list</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" th:href="@{/tasks/formInfoUnDone}">Undone list</a>
+                        <a class="nav-link active" aria-current="page" th:href="@{/tasks/unDone}">Undone list</a>
                     </li>
                 </ul>
             </div>
@@ -54,7 +54,7 @@
 
     <div class="p-3">
         <div class="text-center bg-">
-            <h1 class="mt-5">Авторизация</h1>
+            <h1 class="mt-5">Authorization</h1>
         </div>
     </div>
     <div class="container pt-11">
@@ -64,14 +64,10 @@
                     <div th:if="${fail}" class="alert alert-danger" role="alert">
                         Логин или пароль введены неверно!
                     </div>
-                    <form th:action="@{/login}" method="POST">
+                    <form th:action="@{/users/login}" method="POST">
                         <div class="form-group">
-                            <label>Имя</label>
-                            <input type="text" class="form-control" name="имя">
-                        </div>
-                        <div class="form-group">
-                            <label>Почта</label>
-                            <input type="text" class="form-control" name="email">
+                            <label>Ваш логин</label>
+                            <input type="text" class="form-control" name="login">
                         </div>
                         <div class="form-group">
                             <label>Пароль</label>
@@ -82,8 +78,14 @@
                 </div>
             </div>
         </div>
+        <div class="position-absolute end-50" style="padding: 15px">
+            <a class="btn btn-outline-primary btn-lg" role="button" th:href="@{/users/addUser}">Registration</a>
+        </div>
     </div>
 </div>
+
+
+
 
 </body>
 

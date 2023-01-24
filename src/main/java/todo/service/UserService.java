@@ -26,8 +26,8 @@ public class UserService {
         return store.delete(id);
     }
 
-    public void update(int id, User user) {
-        store.update(id, user);
+    public boolean update(int id, User user) {
+        return store.update(id, user);
     }
 
     public List<User> findAll() {
@@ -39,6 +39,6 @@ public class UserService {
     }
 
     public Optional<User> findByName(String name) {
-        return store.findByName(name);
+        return store.findByLogin(name);
     }
 }

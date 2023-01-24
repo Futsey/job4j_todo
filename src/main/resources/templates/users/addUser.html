@@ -21,19 +21,6 @@
 
 <div class="container">
 
-    <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5 rounded float-start" data-mdb-ripple-color="light">
-        <div class="p-3">
-            <div class="text-center" style="height: 10vh;">
-                <h1 class="mt-5 position-absolute bottom-0 end-50 display-1 mx-auto d-block" style="">JOB4J TODO list</h1>
-            </div>
-        </div>
-        <img src="/logo.png" class="img-fluid" style="height: 80vh;"/>
-        <a href="#!">
-            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-        </a>
-
-    </div>
-
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand text-info bg-dark" href="/index">JOB4J TODO</a>
@@ -50,30 +37,39 @@
                         <a class="nav-link active" aria-current="page" th:href="@{/tasks}">TODO list</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" th:href="@{/tasks/formAdd}">NEW task</a>
+                        <a class="nav-link active" aria-current="page" th:href="@{/tasks/add}">NEW task</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" th:href="@{/tasks/formInfoDone}">Done list</a>
+                        <a class="nav-link active" aria-current="page" th:href="@{/tasks/done}">Done list</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" th:href="@{/tasks/formInfoUnDone}">Undone list</a>
-                    </li>
-                    <li class="nav-item position-absolute top-0 end-0">
-                        <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/loginPage}">
-                            <span th:text="${user.name}"></span>
-                            <span> | Войти</span>
-                        </a>
-                        <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
-                            <span th:text="${user.name}"></span>
-                            <span> | Выйти</span>
-                        </a>
+                        <a class="nav-link active" aria-current="page" th:href="@{/tasks/unDone}">Undone list</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <H1>addUser</H1>
+    <div class="p-3">
+        <div class="text-center bg-">
+            <h1 class="mt-5">Registration</h1>
+        </div>
+    </div>
+    <div class="card-body">
+        <form th:action="@{/users/registration}" method="POST" th:object="${user}" enctype="multipart/form-data">
+            <input type="hidden" name="id" th:field="*{id}"/>
+            <div class="form-group">
+                <label for="name">Ваше имя</label>
+                <input type="text" class="form-control" name="name" id="name" th:placeholder="*{name}">
+                <label for="email">Электронная почта</label>
+                <input type="text" class="form-control" name="email" id="email" th:placeholder="*{email}">
+                <label for="login">Ваш логин</label>
+                <input type="text" class="form-control" name="login" id="login" th:placeholder="*{login}">
+                <label for="password">Пароль</label>
+                <input type="text" class="form-control" name="password" id="password" th:placeholder="*{password}">
+            </div>
+            <button type="submit" class="btn btn-primary">Регистрация</button>
+    </div>
 
 </div>
 

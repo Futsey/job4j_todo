@@ -14,7 +14,7 @@ public class UserDBStore {
 
     private final SessionFactory sf;
     private static final String SELECT_ALL = "FROM User";
-    private static final String SELECT_WHERE_NAME = "FROM User WHERE name = :key";
+    private static final String SELECT_WHERE_LOGIN = "FROM User WHERE login = :key";
     private static final String UPDATE = "UPDATE User SET name = :fname, email = :femail, "
             + "password = :fpassword WHERE id = :fId";
     private static final String DELETE = "DELETE User WHERE id = :fId";
@@ -83,10 +83,10 @@ public class UserDBStore {
         return rsl;
     }
 
-    public Optional<User> findByName(String key) {
+    public Optional<User> findByLogin(String key) {
         Session session = sf.openSession();
         Optional<User> notNullUser = Optional.empty();
-        List<User> itemList = session.createQuery(SELECT_WHERE_NAME, User.class)
+        List<User> itemList = session.createQuery(SELECT_WHERE_LOGIN, User.class)
                 .setParameter("key", key)
                 .list();
         if (itemList.size() == 0) {

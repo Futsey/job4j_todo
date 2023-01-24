@@ -1,11 +1,11 @@
-CREATE TABLE if NOT EXISTS tasks (
+CREATE TABLE if NOT EXISTS todo_tasks (
    id SERIAL PRIMARY KEY,
    description TEXT not null,
    created TIMESTAMP,
    done BOOLEAN
 );
 
-comment on table tasks is 'Задачи';
+comment on table todo_tasks is 'Задачи';
 comment on column tasks.id is 'Уникальный идентификатор задачи';
 comment on column tasks.description is 'Описание задачи';
 comment on column tasks.created is 'Время создания задачи';
