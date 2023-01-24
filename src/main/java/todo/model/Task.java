@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tasks")
+@Table(name = "todo_tasks")
 @Getter
 @Setter
 @ToString

@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import todo.model.Task;
 import todo.service.TaskService;
 
-import java.util.Optional;
-
 import static todo.util.HttpSessionUtil.setGuest;
 
 @ThreadSafe
@@ -21,36 +19,36 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    @GetMapping("")
+    @GetMapping()
     public String list(Model model, HttpSession session) {
         model.addAttribute("tasks", taskService.findAll());
         setGuest(model, session);
         return "tasks/list";
     }
 
-    @GetMapping("/formInfo/{taskId}")
-    public String formTaskInfo(Model model, @PathVariable("taskId") int id, HttpSession session) {
+    @GetMapping("/info/{id}")
+    public String formTaskInfo(Model model, @PathVariable("id") int id, HttpSession session) {
         model.addAttribute("task", taskService.findById(id));
         setGuest(model, session);
         return "tasks/info";
     }
 
-    @GetMapping("/formInfoDone")
+    @GetMapping("/done")
     public String formTaskInfoDone(Model model, @ModelAttribute Task task, HttpSession session) {
         model.addAttribute("tasks", taskService.sortTasks(true));
         setGuest(model, session);
-        return "tasks/infoDone";
+        return "tasks/done";
     }
 
-    @GetMapping("/formInfoUnDone")
+    @GetMapping("/unDone")
     public String formTaskInfoUnDone(Model model, HttpSession session) {
         model.addAttribute("tasks", taskService.sortTasks(false));
         setGuest(model, session);
-        return "tasks/infoUnDone";
+        return "tasks/unDone";
     }
 
-    @GetMapping("/formUpdate/{taskId}")
-    public String formUpdateTask(Model model, @PathVariable("taskId") int id, HttpSession session) {
+    @GetMapping("/update/{id}")
+    public String formUpdateTask(Model model, @PathVariable("id") int id, HttpSession session) {
         model.addAttribute("tasks", taskService.findById(id));
         setGuest(model, session);
         return "tasks/edit";
@@ -65,8 +63,8 @@ public class TaskController {
         return rsl;
     }
 
-    @GetMapping("/execution/{taskId}")
-    public String editTaskExecution(@PathVariable("taskId") int id) {
+    @GetMapping("/execution/{id}")
+    public String editTaskExecution(@PathVariable("id") int id) {
         String rsl = "redirect:/tasks";
         if (!taskService.isDone(id)) {
             rsl = "redirect:/executionFail";
@@ -74,7 +72,7 @@ public class TaskController {
         return rsl;
     }
 
-    @GetMapping("/formAdd")
+    @GetMapping("/add")
     public String addTask(Model model, HttpSession session) {
         model.addAttribute("task",
                 new Task());
@@ -84,19 +82,12 @@ public class TaskController {
 
     @PostMapping("/create")
     public String createTask(@ModelAttribute Task task) {
-        Optional<Task> nonNullTask = Optional.ofNullable(task);
-        String rsl;
-        if (nonNullTask.isEmpty()) {
-            rsl = "redirect:/createFail";
-        } else {
             taskService.add(task);
-            rsl = "redirect:/tasks";
-        }
-        return rsl;
+        return "redirect:/tasks";
     }
 
-    @GetMapping("/delete/{taskId}")
-    public String deleteTask(@PathVariable("taskId") int id) {
+    @GetMapping("/delete/{id}")
+    public String deleteTask(@PathVariable("id") int id) {
         String rsl = "redirect:/tasks";
         if (!taskService.delete(id)) {
             rsl = "redirect:/deleteFail";

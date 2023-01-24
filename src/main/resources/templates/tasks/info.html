@@ -48,16 +48,16 @@
             <a class="nav-link active" aria-current="page" th:href="@{/tasks}">TODO list</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/tasks/formAdd}">NEW task</a>
+            <a class="nav-link active" aria-current="page" th:href="@{/tasks/add}">NEW task</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/tasks/formInfoDone}">Done list</a>
+            <a class="nav-link active" aria-current="page" th:href="@{/tasks/done}">Done list</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/tasks/formInfoUnDone}">Undone list</a>
+            <a class="nav-link active" aria-current="page" th:href="@{/tasks/unDone}">Undone list</a>
           </li>
           <li class="nav-item position-absolute top-0 end-0">
-            <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/loginPage}">
+            <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/users/loginPage}">
               <span th:text="${user.name}"></span>
               <span> | Войти</span>
             </a>
@@ -107,7 +107,7 @@
 
         <td>
           <div class="d-grid gap-2 mx-auto">
-            <a th:href="@{|/tasks/formUpdate/${task.id}|}" type="button" class="btn btn-outline-primary">Edit</a>
+            <a th:href="@{|/tasks/update/${task.id}|}" type="button" class="btn btn-outline-primary">Edit</a>
             <a th:href="@{|/tasks/execution/${task.id}|}" type="button" class="btn btn-outline-secondary">SET DONE</a>
             <a th:href="@{|/tasks/delete/${task.id}|}" type="button" class="btn btn-outline-danger">DELETE</a>
           </div>
@@ -117,7 +117,7 @@
     </table>
 
       <div class="position-absolute end-50">
-        <a class="btn btn-outline-primary btn-lg" role="button" th:href="@{/tasks/formAdd}">New Task</a>
+        <a class="btn btn-outline-primary btn-lg" role="button" th:href="@{/tasks/add}">New Task</a>
       </div>
   </div>
 

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import todo.model.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,8 +18,7 @@ public class TaskDBStore {
     private final SessionFactory sf;
     private static final Logger LOG = LoggerFactory.getLogger(TaskDBStore.class.getName());
     private static final String SELECT_ALL = "FROM Task";
-    private static final String SELECT_COMPLETED = "FROM Task WHERE done IS TRUE";
-    private static final String SELECT_UNCOMPLETED = "FROM Task WHERE done IS NOT TRUE";
+    private static final String SELECT_COMPLETED = "FROM Task WHERE done = :fdone";
     private static final String UPDATE = "UPDATE Task SET description = :fdescription, done = :fdone WHERE id = :fId";
     private static final String UPDATE_DONE_STATE = "UPDATE Task SET done = true WHERE id = :fId";
     private static final String DELETE = "DELETE Task WHERE id = :fId";
@@ -54,16 +54,20 @@ public class TaskDBStore {
     }
 
     public List<Task> sortTasks(boolean done) {
+        List<Task> list = new ArrayList<>();
         Session session = sf.openSession();
-        Query<Task> query;
-        if (done) {
-            query = session.createQuery(SELECT_COMPLETED, Task.class);
-        } else {
-            query = session.createQuery(SELECT_UNCOMPLETED, Task.class);
+        try {
+            session.beginTransaction();
+            list = session.createQuery(SELECT_COMPLETED, Task.class)
+                    .setParameter("fdone", done)
+                    .list();
+        } catch (Exception e) {
+            LOG.error("Exception: TaskDBStore{ sortTasks() }", e);
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
-        List<Task> allTaskList = query.list();
-        session.close();
-        return allTaskList;
+        return list;
     }
 
     public boolean update(Task task) {
