@@ -9,6 +9,8 @@ import todo.model.Task;
 import todo.service.TaskService;
 import javax.servlet.http.HttpSession;
 
+import java.util.Optional;
+
 import static todo.util.HttpSessionUtil.setGuest;
 
 @Controller
@@ -27,7 +29,8 @@ public class TaskController {
 
     @GetMapping("/info/{id}")
     public String formTaskInfo(Model model, @PathVariable("id") int id, HttpSession session) {
-        model.addAttribute("task", taskService.findById(id));
+        Optional<Task> taskDb = taskService.findById(id);
+        taskDb.ifPresent(task -> model.addAttribute("task", task));
         setGuest(model, session);
         return "tasks/info";
     }
@@ -48,7 +51,8 @@ public class TaskController {
 
     @GetMapping("/update/{id}")
     public String formUpdateTask(Model model, @PathVariable("id") int id, HttpSession session) {
-        model.addAttribute("tasks", taskService.findById(id));
+        Optional<Task> taskDb = taskService.findById(id);
+        taskDb.ifPresent(task -> model.addAttribute("task", task));
         setGuest(model, session);
         return "tasks/edit";
     }

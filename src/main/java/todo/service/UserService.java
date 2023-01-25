@@ -24,15 +24,15 @@ public class UserService {
         return store.delete(id);
     }
 
-    public boolean update(int id, User user) {
-        return store.update(id, user);
+    public boolean update(int id) {
+        return store.update(id);
     }
 
     public List<User> findAll() {
         return store.findAll();
     }
 
-    public User findById(int id) {
+    public Optional<User> findById(int id) {
         return store.findById(id);
     }
 

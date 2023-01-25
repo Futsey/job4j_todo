@@ -40,7 +40,7 @@ public class TaskService {
         return store.sortTasks(done);
     }
 
-    public Task findById(int id) {
+    public Optional<Task> findById(int id) {
         return store.findById(id);
     }
 }
