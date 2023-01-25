@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import todo.model.Task;
 import todo.service.TaskService;
-
 import javax.servlet.http.HttpSession;
 
 import static todo.util.HttpSessionUtil.setGuest;
