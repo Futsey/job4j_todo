@@ -1,17 +1,18 @@
 package todo.controller;
 
-import jakarta.servlet.http.HttpSession;
+
 import lombok.AllArgsConstructor;
-import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import todo.model.Task;
 import todo.service.TaskService;
 
+import javax.servlet.http.HttpSession;
+
 import static todo.util.HttpSessionUtil.setGuest;
 
-@ThreadSafe
+
 @Controller
 @AllArgsConstructor
 @RequestMapping("/tasks")

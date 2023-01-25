@@ -1,6 +1,5 @@
 package todo.service;
 
-import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import todo.model.Task;
 import todo.store.TaskDBStore;
@@ -8,7 +7,6 @@ import todo.store.TaskDBStore;
 import java.util.List;
 import java.util.Optional;
 
-@ThreadSafe
 @Service
 public class TaskService {
 

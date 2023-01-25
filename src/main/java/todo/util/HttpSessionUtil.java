@@ -1,8 +1,9 @@
 package todo.util;
 
-import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import todo.model.User;
+
+import javax.servlet.http.HttpSession;
 
 public final class HttpSessionUtil {
 
