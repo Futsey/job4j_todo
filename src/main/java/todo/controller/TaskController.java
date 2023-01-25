@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import static todo.util.HttpSessionUtil.setGuest;
 
-
 @Controller
 @AllArgsConstructor
 @RequestMapping("/tasks")
