@@ -26,12 +26,8 @@ public class TaskDBStore {
     }
 
     public Optional<Task> add(Task task) {
-        Optional<Task> nonNullTask = Optional.ofNullable(task);
-        if (nonNullTask.isPresent()) {
-            crudRepository.run(session -> session.save(task));
-        } else {
-            System.out.println("Couldn`t create the task");
-        }
+        Optional<Task> nonNullTask = Optional.of(task);
+        crudRepository.run(session -> session.save(task));
         return nonNullTask;
     }
 

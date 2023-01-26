@@ -26,12 +26,8 @@ public class UserDBStore {
     }
 
     public Optional<User> add(User user) {
-        Optional<User> nonNullUser = Optional.ofNullable(user);
-        if (nonNullUser.isPresent()) {
-            crudRepository.run(session -> session.save(user));
-        } else {
-            System.out.println("Couldn`t create the user");
-        }
+        Optional<User> nonNullUser = Optional.of(user);
+        crudRepository.run(session -> session.save(user));
         return nonNullUser;
     }
 

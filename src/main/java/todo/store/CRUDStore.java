@@ -3,6 +3,9 @@ package todo.store;
 import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.function.Function;
 public class CRUDStore {
 
     private final SessionFactory sf;
+    private static final Logger LOG = LoggerFactory.getLogger(CRUDStore.class.getName());
 
     public void run(Consumer<Session> command) {
         tx(session -> {
@@ -69,18 +73,21 @@ public class CRUDStore {
     }
 
     public <T> T tx(Function<Session, T> command) {
-        var session = sf.openSession();
-        try (session) {
-            var tx = session.beginTransaction();
+        Session session = sf.openSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            tx = session.beginTransaction();
             T rsl = command.apply(session);
             tx.commit();
             return rsl;
         } catch (Exception e) {
-            var tx = session.getTransaction();
-            if (tx.isActive()) {
+            if (tx != null) {
                 tx.rollback();
             }
+            LOG.error("Exception: CRUDStore{ tx() }", e);
             throw e;
+        } finally {
+            session.close();
         }
     }
 }
