@@ -26,8 +26,13 @@ public class UserDBStore {
     }
 
     public Optional<User> add(User user) {
-        Optional<User> nonNullUser = Optional.of(user);
-        crudRepository.run(session -> session.save(user));
+        Optional<User> nonNullUser = Optional.empty();
+        try {
+            crudRepository.run(session -> session.save(user));
+            nonNullUser = Optional.of(user);
+        } catch (Exception e) {
+            System.out.println("Ups, smth went wrong and user doesn`t added");
+        }
         return nonNullUser;
     }
 
