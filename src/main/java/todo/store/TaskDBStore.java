@@ -32,7 +32,7 @@ public class TaskDBStore {
             crudRepository.run(session -> session.save(task));
             nonNullTask = Optional.of(task);
         } catch (Exception e) {
-            System.out.println("Ups, smth went wrong and task doesn`t added");
+            LOG.error("Exception: TaskDBStore{ add() }", e);
         }
         return nonNullTask;
     }

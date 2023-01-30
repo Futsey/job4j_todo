@@ -31,7 +31,7 @@ public class UserDBStore {
             crudRepository.run(session -> session.save(user));
             nonNullUser = Optional.of(user);
         } catch (Exception e) {
-            System.out.println("Ups, smth went wrong and user doesn`t added");
+            LOG.error("Exception: UserDBStore{ add() }", e);
         }
         return nonNullUser;
     }
