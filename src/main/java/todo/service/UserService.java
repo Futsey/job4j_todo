@@ -36,7 +36,7 @@ public class UserService {
         return store.findById(id);
     }
 
-    public Optional<User> findByName(String name) {
+    public Optional<User> findByLogin(String name) {
         return store.findByLogin(name);
     }
 }

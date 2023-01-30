@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import todo.model.Task;
+import todo.model.User;
 
 import java.util.List;
 import java.util.Map;
@@ -26,9 +27,12 @@ public class TaskDBStore {
     }
 
     public Optional<Task> add(Task task) {
-        Optional<Task> nonNullTask = Optional.ofNullable(task);
-        if (nonNullTask.isPresent()) {
+        Optional<Task> nonNullTask = Optional.empty();
+        try {
             crudRepository.run(session -> session.save(task));
+            nonNullTask = Optional.of(task);
+        } catch (Exception e) {
+            System.out.println("Ups, smth went wrong and task doesn`t added");
         }
         return nonNullTask;
     }
@@ -40,14 +44,16 @@ public class TaskDBStore {
     public List<Task> sortTasks(boolean done) {
         return crudRepository.query(
                 SELECT_COMPLETED, Task.class,
-                Map.of("fdone", "%" + done + "%")
-        );
+                Map.of("fdone", done));
     }
 
     public boolean update(Task task) {
         boolean rsl = false;
         try {
-            crudRepository.run(UPDATE, Map.of("fId", task.getId()));
+            crudRepository.run(UPDATE, Map.of(
+                    "fdescription", task.getDescription(),
+                    "fdone", task.isDone(),
+                    "fId", task.getId()));
             rsl = true;
         } catch (Exception e) {
             LOG.error("Exception: TaskDBStore{ update() }", e);

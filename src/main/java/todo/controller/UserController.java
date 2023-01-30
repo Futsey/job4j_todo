@@ -12,6 +12,8 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static todo.util.HttpSessionUtil.setGuest;
+
 @Controller
 @AllArgsConstructor
 @RequestMapping("/users")
@@ -20,8 +22,10 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/addUser")
-    public String addUser(Model model) {
-        model.addAttribute("user", new User(0, "Введите имя", "Введите электронную почту", "Введите логин", "Введите пароль", LocalDateTime.now()));
+    public String addUser(Model model, HttpSession session) {
+        setGuest(model, session);
+        model.addAttribute("user", new User(0, "Новый пользователь", "Введите электронную почту",
+                "Введите логин", "Введите пароль", LocalDateTime.now()));
         return "users/addUser";
     }
 
@@ -37,27 +41,30 @@ public class UserController {
     }
 
     @GetMapping("/fail")
-    public String fail(Model model) {
+    public String fail(Model model, HttpSession session) {
+        setGuest(model, session);
         model.addAttribute("fail", "Registration failed");
         return "/users/registrationFailed";
     }
 
     @GetMapping("/success")
-    public String success(Model model) {
+    public String success(Model model, HttpSession session) {
+        setGuest(model, session);
         model.addAttribute("user", new User());
         model.addAttribute("success", "Registration successful");
         return "/users/registrationSuccess";
     }
 
     @GetMapping("/loginPage")
-    public String loginPage(Model model, @RequestParam(name = "fail", required = false) Boolean fail) {
+    public String loginPage(Model model, @RequestParam(name = "fail", required = false) Boolean fail, HttpSession session) {
+        setGuest(model, session);
         model.addAttribute("fail", fail != null);
         return "users/login";
     }
 
     @PostMapping("/login")
     public String login(@ModelAttribute User user, HttpServletRequest req) {
-        Optional<User> userDb = userService.findByName(user.getLogin());
+        Optional<User> userDb = userService.findByLogin(user.getLogin());
         if (userDb.isEmpty()) {
             return "redirect:/users/loginPage?fail=true";
         }

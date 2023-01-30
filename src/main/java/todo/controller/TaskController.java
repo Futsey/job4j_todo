@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import todo.model.Task;
+import todo.model.User;
 import todo.service.TaskService;
 import javax.servlet.http.HttpSession;
 
@@ -77,15 +78,17 @@ public class TaskController {
 
     @GetMapping("/add")
     public String addTask(Model model, HttpSession session) {
+        setGuest(model, session);
         model.addAttribute("task",
                 new Task());
-        setGuest(model, session);
         return "tasks/add";
     }
 
     @PostMapping("/create")
-    public String createTask(@ModelAttribute Task task) {
-            taskService.add(task);
+    public String createTask(@ModelAttribute Task task, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        task.setUser(user);
+        taskService.add(task);
         return "redirect:/tasks";
     }
 

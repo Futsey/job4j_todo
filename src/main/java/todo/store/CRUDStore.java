@@ -76,7 +76,6 @@ public class CRUDStore {
         Session session = sf.openSession();
         Transaction tx = session.beginTransaction();
         try {
-            tx = session.beginTransaction();
             T rsl = command.apply(session);
             tx.commit();
             return rsl;

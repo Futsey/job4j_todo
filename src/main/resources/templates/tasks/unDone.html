@@ -49,7 +49,7 @@
               <span th:text="${user.name}"></span>
               <span> | Войти</span>
             </a>
-            <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
+            <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/users/logout}">
               <span th:text="${user.name}"></span>
               <span> | Выйти</span>
             </a>
@@ -84,6 +84,7 @@
         <th scope="col">#</th>
         <th scope="col">Description</th>
         <th scope="col">Create date</th>
+        <th scope="col">User</th>
         <th scope="col">Status</th>
       </tr>
       </thead>
@@ -99,6 +100,13 @@
         </td>
 
         <td th:text="${#temporals.format(task.created, 'dd-MM-yyyy HH:mm')}"/>
+
+        <td>
+          <a th:href="@{|/tasks/info/${task.id}|}">
+            <i class="fa fa-edit"></i>
+            <span th:text="${task.user.name}"></span>
+          </a>
+        </td>
 
         <td class="alert alert-success" role="alert" th:if="${task.done}">
           <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">

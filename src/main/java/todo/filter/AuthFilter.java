@@ -11,8 +11,8 @@ import java.util.Set;
 @Component
 public class AuthFilter implements Filter {
 
-    private static final Set<String> TEMPLATES_SET = Set.of("index", "login", "loginPage", "registration",
-            "registrationFailed", "registrationSuccess", "addUser");
+    private static final Set<String> TEMPLATES_SET = Set.of("index", "login", "loginPage", "fail", "success",
+            "registrationFailed", "registrationSuccess", "addUser", "registration");
 
     private boolean checkSet(String uri) {
         return TEMPLATES_SET.stream().anyMatch(uri::endsWith);
@@ -27,7 +27,7 @@ public class AuthFilter implements Filter {
             filterChain.doFilter(req, res);
             return;
         }
-        if (req.getSession().getAttribute("users") == null) {
+        if (req.getSession().getAttribute("user") == null) {
             res.sendRedirect(req.getContextPath() + "/users/loginPage");
             return;
         }

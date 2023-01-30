@@ -50,7 +50,7 @@
                             <span th:text="${user.name}"></span>
                             <span> | Войти</span>
                         </a>
-                        <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
+                        <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/users/logout}">
                             <span th:text="${user.name}"></span>
                             <span> | Выйти</span>
                         </a>

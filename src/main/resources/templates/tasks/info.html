@@ -61,7 +61,7 @@
               <span th:text="${user.name}"></span>
               <span> | Войти</span>
             </a>
-            <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
+            <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/users/logout}">
               <span th:text="${user.name}"></span>
               <span> | Выйти</span>
             </a>
@@ -83,6 +83,7 @@
       <thead>
       <tr  class="table-active">
         <th scope="col">Description</th>
+        <th scope="col">User</th>
         <th scope="col">Status</th>
         <th scope="col">Actions</th>
       </tr>
@@ -92,6 +93,13 @@
         <input type="hidden" name="id" th:field="*{id}"/>
         <td>
           <p th:text="*{description}"/>
+        </td>
+
+        <td>
+          <a th:href="@{|/tasks/info/${task.id}|}">
+            <i class="fa fa-edit"></i>
+            <span th:text="${task.user.name}"></span>
+          </a>
         </td>
 
         <td class="alert alert-success" role="alert" th:if="${task.done}">

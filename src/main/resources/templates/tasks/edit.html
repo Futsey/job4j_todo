@@ -49,7 +49,7 @@
               <span th:text="${user.name}"></span>
               <span> | Войти</span>
             </a>
-            <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
+            <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/users/logout}">
               <span th:text="${user.name}"></span>
               <span> | Выйти</span>
             </a>
@@ -76,7 +76,7 @@
       </tr>
       </thead>
 
-      <form th:action="@{/tasks/edit}" method="POST" th:object="${tasks}">
+      <form th:action="@{/tasks/edit}" method="POST" th:object="${task}">
         <input type="hidden" name="id" th:field="*{id}"/>
         <td>
           <input type="text" name="description" id="description" th:field="*{description}">
