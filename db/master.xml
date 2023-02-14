@@ -8,5 +8,7 @@
     <include file="scripts/001_ddl_create_todo_tasks.sql" relativeToChangelogFile="true"/>
     <include file="scripts/002_ddl_todo_users.sql" relativeToChangelogFile="true"/>
     <include file="scripts/003_ddl_alter_todo_users.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/004_ddl_create_todo_priorities.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/005_ddl_alter_todo_tasks.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

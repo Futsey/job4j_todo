@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import todo.model.Task;
 import todo.model.User;
+import todo.service.PriorityService;
 import todo.service.TaskService;
 import javax.servlet.http.HttpSession;
 
@@ -20,10 +21,12 @@ import static todo.util.HttpSessionUtil.setGuest;
 public class TaskController {
 
     private final TaskService taskService;
+    private final PriorityService priorityService;
 
     @GetMapping()
     public String list(Model model, HttpSession session) {
         model.addAttribute("tasks", taskService.findAll());
+        model.addAttribute("priorities", priorityService.findAll());
         setGuest(model, session);
         return "tasks/list";
     }
@@ -79,8 +82,8 @@ public class TaskController {
     @GetMapping("/add")
     public String addTask(Model model, HttpSession session) {
         setGuest(model, session);
-        model.addAttribute("task",
-                new Task());
+        model.addAttribute("task", new Task());
+        model.addAttribute("priority", priorityService.findAll());
         return "tasks/add";
     }
 
