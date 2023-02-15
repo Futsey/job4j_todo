@@ -57,6 +57,7 @@ public class TaskController {
     public String formUpdateTask(Model model, @PathVariable("id") int id, HttpSession session) {
         Optional<Task> taskDb = taskService.findById(id);
         taskDb.ifPresent(task -> model.addAttribute("task", task));
+        model.addAttribute("priorities", priorityService.findAll());
         setGuest(model, session);
         return "tasks/edit";
     }
@@ -64,8 +65,8 @@ public class TaskController {
     @PostMapping("/edit")
     public String editTask(@ModelAttribute Task task) {
         String rsl = "redirect:/tasks";
-        if (!taskService.update(task)) {
-            rsl = "redirect:/tasks/editFail";
+        if (!taskService.update(task) || !priorityService.isPriorityPresent(task.getPriority().getId())) {
+            rsl = "/editFail";
         }
         return rsl;
     }
@@ -83,16 +84,20 @@ public class TaskController {
     public String addTask(Model model, HttpSession session) {
         setGuest(model, session);
         model.addAttribute("task", new Task());
-        model.addAttribute("priority", priorityService.findAll());
+        model.addAttribute("priorities", priorityService.findAll());
         return "tasks/add";
     }
 
     @PostMapping("/create")
     public String createTask(@ModelAttribute Task task, HttpSession session) {
+        String rsl = "redirect:/tasks";
+        if (!priorityService.isPriorityPresent(task.getPriority().getId())) {
+            rsl = "redirect:/tasks/createFail";
+        }
         User user = (User) session.getAttribute("user");
         task.setUser(user);
         taskService.add(task);
-        return "redirect:/tasks";
+        return rsl;
     }
 
     @GetMapping("/delete/{id}")

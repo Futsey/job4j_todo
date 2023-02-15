@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import todo.model.Priority;
-import todo.model.Task;
 
 import java.util.List;
 import java.util.Map;
@@ -82,5 +81,15 @@ public class PriorityDBStore {
                 SELECT_BY_ID, Priority.class,
                 Map.of("fId", id)
         );
+    }
+
+    public boolean isPriorityPresent(int id) {
+        boolean rsl = false;
+        if (findById(id).isPresent()) {
+            rsl = true;
+        } else {
+            LOG.error("Exception: PriorityDBStore{ isPriorityPresent() }");
+        }
+        return rsl;
     }
 }

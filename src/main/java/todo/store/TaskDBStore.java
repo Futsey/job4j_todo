@@ -15,7 +15,7 @@ public class TaskDBStore {
     private final CRUDStore crudRepository;
     private static final Logger LOG = LoggerFactory.getLogger(TaskDBStore.class.getName());
     private static final String SELECT_ALL = "FROM Task f JOIN FETCH f.priority";
-    private static final String SELECT_BY_ID = "FROM Task WHERE id = :fId";
+    private static final String SELECT_BY_ID = "FROM Task f JOIN FETCH f.priority WHERE f.id = :fId";
     private static final String SELECT_COMPLETED = "FROM Task WHERE done = :fdone";
     private static final String UPDATE = "UPDATE Task SET description = :fdescription, done = :fdone, "
             + "priority = :fpriority WHERE id = :fId";

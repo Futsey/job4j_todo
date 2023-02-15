@@ -72,6 +72,7 @@
       <tr  class="table-active">
         <th scope="col">Description</th>
         <th scope="col">Status</th>
+        <th scope="col">Priority</th>
         <th scope="col">Actions</th>
       </tr>
       </thead>
@@ -87,6 +88,14 @@
             <option th:value="1">DONE</option>
             <option th:value="0" >UNDONE</option>
           </select>
+        </td>
+
+        <td>
+          <div class="mb-3">
+            <select class="form-control" id="priority" name="priority.id">
+              <option th:each="priority : ${priorities}" th:value="${priority.id}" th:text="${priority.name}"></option>
+            </select>
+          </div>
         </td>
 
         <td>

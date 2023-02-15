@@ -40,4 +40,8 @@ public class PriorityService {
     public Optional<Priority> findById(int id) {
         return store.findById(id);
     }
+
+    public boolean isPriorityPresent(int id) {
+        return  store.isPriorityPresent(id);
+    }
 }

@@ -71,17 +71,12 @@
           <div class="form-group">
             <input type="text" class="form-control" name="description" id="description" th:placeholder="*{description}">
           </div>
-            <div class="btn-group dropend">
-              <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                ВС в конце
-              </button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" th:value="urgently">Urgently</a></li>
-                <li><a class="dropdown-item" th:value="normal">Normal</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" th:value="null">Without priority</a></li>
-              </ul>
-            </div>
+          <div class="mb-3">
+            <label for="priority"><b>Priority</b></label>
+            <select class="form-control" id="priority" name="priority.id">
+              <option th:each="priority : ${priorities}" th:value="${priority.id}" th:text="${priority.name}"></option>
+            </select>
+          </div>
           <div class="form-check">
             <input type="checkbox" name="visible" class="form-check-input" id="visible">
             <label class="form-check-label" for="visible">Опубликовать</label>
