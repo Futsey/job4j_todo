@@ -26,15 +26,15 @@ public class TaskDBStore {
         this.crudRepository = crudRepository;
     }
 
-    public Optional<Task> add(Task task) {
-        Optional<Task> nonNullTask = Optional.empty();
+    public boolean add(Task task) {
+        boolean rsl = false;
         try {
             crudRepository.run(session -> session.save(task));
-            nonNullTask = Optional.of(task);
+            rsl = true;
         } catch (Exception e) {
             LOG.error("Exception: TaskDBStore{ add() }", e);
         }
-        return nonNullTask;
+        return rsl;
     }
 
     public List<Task> findAll() {

@@ -25,15 +25,15 @@ public class PriorityDBStore {
         this.crudRepository = crudRepository;
     }
 
-    public Optional<Priority> add(Priority priority) {
-        Optional<Priority> nonNullPriority = Optional.empty();
+    public boolean add(Priority priority) {
+        boolean rsl = false;
         try {
             crudRepository.run(session -> session.save(priority));
-            nonNullPriority = Optional.of(priority);
+            rsl = true;
         } catch (Exception e) {
             LOG.error("Exception: PriorityDBStore{ add() }", e);
         }
-        return nonNullPriority;
+        return rsl;
     }
 
     public List<Priority> findAll() {

@@ -65,7 +65,7 @@ public class TaskController {
     @PostMapping("/edit")
     public String editTask(@ModelAttribute Task task) {
         String rsl = "redirect:/tasks";
-        if (!taskService.update(task) || !priorityService.isPriorityPresent(task.getPriority().getId())) {
+        if (!taskService.update(task)) {
             rsl = "/editFail";
         }
         return rsl;
@@ -91,12 +91,11 @@ public class TaskController {
     @PostMapping("/create")
     public String createTask(@ModelAttribute Task task, HttpSession session) {
         String rsl = "redirect:/tasks";
-        if (!priorityService.isPriorityPresent(task.getPriority().getId())) {
-            rsl = "redirect:/tasks/createFail";
-        }
         User user = (User) session.getAttribute("user");
         task.setUser(user);
-        taskService.add(task);
+        if (!taskService.add(task)) {
+            rsl = "/createFail";
+        }
         return rsl;
     }
 

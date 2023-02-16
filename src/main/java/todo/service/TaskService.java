@@ -16,7 +16,7 @@ public class TaskService {
         this.store = store;
     }
 
-    public Optional<Task> add(Task task) {
+    public boolean add(Task task) {
         return store.add(task);
     }
 

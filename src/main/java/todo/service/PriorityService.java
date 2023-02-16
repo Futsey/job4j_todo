@@ -2,7 +2,6 @@ package todo.service;
 
 import org.springframework.stereotype.Service;
 import todo.model.Priority;
-import todo.model.Task;
 import todo.store.PriorityDBStore;
 
 import java.util.List;
@@ -17,7 +16,7 @@ public class PriorityService {
         this.store = store;
     }
 
-    public Optional<Priority> add(Priority priority) {
+    public boolean add(Priority priority) {
         return store.add(priority);
     }
 
