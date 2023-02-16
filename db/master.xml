@@ -10,5 +10,8 @@
     <include file="scripts/003_ddl_alter_todo_users.sql" relativeToChangelogFile="true"/>
     <include file="scripts/004_ddl_create_todo_priorities.sql" relativeToChangelogFile="true"/>
     <include file="scripts/005_ddl_alter_todo_tasks.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/006_ddl_create_todo_categories_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/007_ddl_create_todo_tasks_categories_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/008_dml_insert_todo_categories.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

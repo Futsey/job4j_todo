@@ -1,0 +1,1 @@
+INSERT INTO todo_categories (name) VALUES ('Programming'), ('Health'), ('HomeWork') ON CONFLICT DO NOTHING
