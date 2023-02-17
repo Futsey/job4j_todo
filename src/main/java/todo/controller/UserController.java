@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import todo.model.User;
 import todo.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -63,12 +62,12 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute User user, HttpServletRequest req) {
-        Optional<User> userDb = userService.findByLogin(user.getLogin());
+    public String loginUser(@ModelAttribute User user, Model model, HttpSession session) {
+        var userDb = userService.findByLoginAndPassword(user.getLogin(), user.getPassword());
         if (userDb.isEmpty()) {
-            return "redirect:/users/loginPage?fail=true";
+            model.addAttribute("fail", "Почта или пароль введены неверно");
+            return "redirect:/loginPage?fail=true";
         }
-        HttpSession session = req.getSession();
         session.setAttribute("user", userDb.get());
         return "redirect:/index";
     }

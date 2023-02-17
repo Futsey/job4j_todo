@@ -3,7 +3,9 @@ package todo.store;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import todo.model.Priority;
 import todo.model.Task;
+import todo.service.PriorityService;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +15,7 @@ import java.util.Optional;
 public class TaskDBStore {
 
     private final CRUDStore crudRepository;
+    private final PriorityService priorityService;
     private static final Logger LOG = LoggerFactory.getLogger(TaskDBStore.class.getName());
     private static final String SELECT_ALL = "FROM Task f JOIN FETCH f.priority";
     private static final String SELECT_BY_ID = "FROM Task f JOIN FETCH f.priority WHERE f.id = :fId";
@@ -22,19 +25,22 @@ public class TaskDBStore {
     private static final String UPDATE_DONE_STATE = "UPDATE Task SET done = true WHERE id = :fId";
     private static final String DELETE = "DELETE Task WHERE id = :fId";
 
-    public TaskDBStore(CRUDStore crudRepository) {
+    public TaskDBStore(CRUDStore crudRepository, PriorityService priorityService) {
         this.crudRepository = crudRepository;
+        this.priorityService = priorityService;
     }
 
     public boolean add(Task task) {
         boolean rsl = false;
-        try {
+        if (isPriorityPresent(task)) {
             crudRepository.run(session -> session.save(task));
             rsl = true;
-        } catch (Exception e) {
-            LOG.error("Exception: TaskDBStore{ add() }", e);
         }
         return rsl;
+    }
+
+    public boolean isPriorityPresent(Task task) {
+        return priorityService.findById(task.getPriority().getId()).isPresent();
     }
 
     public List<Task> findAll() {
@@ -49,15 +55,13 @@ public class TaskDBStore {
 
     public boolean update(Task task) {
         boolean rsl = false;
-        try {
+        if (isPriorityPresent(task)) {
             crudRepository.run(UPDATE, Map.of(
                     "fdescription", task.getDescription(),
                     "fdone", task.isDone(),
                     "fpriority", task.getPriority(),
                     "fId", task.getId()));
             rsl = true;
-        } catch (Exception e) {
-            LOG.error("Exception: TaskDBStore{ update() }", e);
         }
         return rsl;
     }

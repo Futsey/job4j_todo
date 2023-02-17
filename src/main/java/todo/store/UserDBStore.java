@@ -17,6 +17,8 @@ public class UserDBStore {
     private static final String SELECT_ALL = "FROM User";
     private static final String SELECT_BY_ID = "FROM Task WHERE id = :fId";
     private static final String SELECT_WHERE_LOGIN = "FROM User WHERE login = :fkey";
+    private static final String SELECT_WHERE_LOGIN_AND_PASSWORD =
+            "FROM User WHERE login = :flogin AND password = :fpassword";
     private static final String UPDATE = "UPDATE User SET name = :fname, email = :femail, "
             + "password = :fpassword WHERE id = :fId";
     private static final String DELETE = "DELETE User WHERE id = :fId";
@@ -67,6 +69,19 @@ public class UserDBStore {
                 SELECT_WHERE_LOGIN, User.class,
                 Map.of("fkey", key)
         );
+    }
+
+    public Optional<User> findByLoginAndPassword(String login, String password) {
+        Optional<User> userDB = Optional.empty();
+        try {
+            userDB = crudRepository.optional(
+                    SELECT_WHERE_LOGIN_AND_PASSWORD,
+                    User.class,
+                    Map.of("flogin", login, "fpassword", password));
+        } catch (Exception e) {
+            LOG.error("Exception: UserDBStore{ findByLoginAnaPassword() }", e);
+        }
+        return userDB;
     }
 
     public Optional<User> findById(int id) {
