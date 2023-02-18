@@ -1,16 +1,18 @@
 package todo.controller;
 
-
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import todo.model.Category;
 import todo.model.Task;
 import todo.model.User;
+import todo.service.CategoryService;
 import todo.service.PriorityService;
 import todo.service.TaskService;
 import javax.servlet.http.HttpSession;
 
+import java.util.List;
 import java.util.Optional;
 
 import static todo.util.HttpSessionUtil.setGuest;
@@ -22,6 +24,7 @@ public class TaskController {
 
     private final TaskService taskService;
     private final PriorityService priorityService;
+    private final CategoryService categoryService;
 
     @GetMapping()
     public String list(Model model, HttpSession session) {
@@ -58,6 +61,7 @@ public class TaskController {
         Optional<Task> taskDb = taskService.findById(id);
         taskDb.ifPresent(task -> model.addAttribute("task", task));
         model.addAttribute("priorities", priorityService.findAll());
+        model.addAttribute("categories", categoryService.findAll());
         setGuest(model, session);
         return "tasks/edit";
     }
@@ -85,14 +89,16 @@ public class TaskController {
         setGuest(model, session);
         model.addAttribute("task", new Task());
         model.addAttribute("priorities", priorityService.findAll());
+        model.addAttribute("categories", categoryService.findAll());
         return "tasks/add";
     }
 
     @PostMapping("/create")
-    public String createTask(@ModelAttribute Task task, HttpSession session) {
+    public String createTask(@ModelAttribute Task task, @RequestParam("category") List<Long> categoryId, HttpSession session) {
         String rsl = "redirect:/tasks";
         User user = (User) session.getAttribute("user");
         task.setUser(user);
+        task.setCategoryList(categoryService.findAllById(categoryId));
         if (!taskService.add(task)) {
             rsl = "/createFail";
         }
