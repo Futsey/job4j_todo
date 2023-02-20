@@ -12,6 +12,7 @@ import todo.service.PriorityService;
 import todo.service.TaskService;
 import javax.servlet.http.HttpSession;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,8 +29,8 @@ public class TaskController {
 
     @GetMapping()
     public String list(Model model, HttpSession session) {
-        model.addAttribute("tasks", taskService.findAll());
-        model.addAttribute("priorities", priorityService.findAll());
+        List<Task> all = taskService.findAll();
+        model.addAttribute("tasks", all);
         setGuest(model, session);
         return "tasks/list";
     }
@@ -67,8 +68,13 @@ public class TaskController {
     }
 
     @PostMapping("/edit")
-    public String editTask(@ModelAttribute Task task) {
+    public String editTask(@ModelAttribute Task task,
+                           @RequestParam(value = "category") List<Long> categoryId, HttpSession session) {
         String rsl = "redirect:/tasks";
+        User user = (User) session.getAttribute("user");
+        task.setUser(user);
+        List<Category> catTempList = categoryService.findAllById(categoryId);
+        task.setCategoryList(catTempList);
         if (!taskService.update(task)) {
             rsl = "/editFail";
         }

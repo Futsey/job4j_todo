@@ -11,9 +11,15 @@ import java.util.Optional;
 public class CategoryDBStore {
 
     private final CRUDStore crudRepository;
-    private static final String SELECT_ALL = "FROM Category";
-    private static final String SELECT_BY_ID = "FROM Category WHERE id = :fId";
-    private static final String SELECT_BY_SEVERAL_ID = "FROM Category WHERE id IN : (:fIdList)";
+    private static final String SELECT_ALL = """
+            FROM Category""";
+    private static final String SELECT_BY_ID = """
+            FROM Category 
+            WHERE id = :fId""";
+    private static final String SELECT_BY_SEVERAL_ID = """
+            FROM Category 
+            WHERE id 
+            IN (:fIdList)""";
 
     public CategoryDBStore(CRUDStore crudRepository) {
         this.crudRepository = crudRepository;

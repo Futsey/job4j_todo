@@ -3,8 +3,8 @@ package todo.store;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import todo.model.Priority;
 import todo.model.Task;
+import todo.service.CategoryService;
 import todo.service.PriorityService;
 
 import java.util.List;
@@ -16,18 +16,43 @@ public class TaskDBStore {
 
     private final CRUDStore crudRepository;
     private final PriorityService priorityService;
+    private final CategoryService categoryService;
     private static final Logger LOG = LoggerFactory.getLogger(TaskDBStore.class.getName());
-    private static final String SELECT_ALL = "FROM Task f JOIN FETCH f.priority";
-    private static final String SELECT_BY_ID = "FROM Task f JOIN FETCH f.priority WHERE f.id = :fId";
-    private static final String SELECT_COMPLETED = "FROM Task WHERE done = :fdone";
-    private static final String UPDATE = "UPDATE Task SET description = :fdescription, done = :fdone, "
-            + "priority = :fpriority WHERE id = :fId";
-    private static final String UPDATE_DONE_STATE = "UPDATE Task SET done = true WHERE id = :fId";
-    private static final String DELETE = "DELETE Task WHERE id = :fId";
 
-    public TaskDBStore(CRUDStore crudRepository, PriorityService priorityService) {
+    private static final String SELECT_ALL_WITH_PRIORITY_AND_CATEGORY = """
+            SELECT distinct t FROM Task t 
+            JOIN FETCH t.priority
+            JOIN FETCH t.categoryList
+            """;
+    private static final String SELECT_BY_ID = """
+            FROM Task t 
+            JOIN FETCH t.priority 
+            JOIN FETCH t.categoryList
+            WHERE t.id = :fId
+            """;
+    private static final String SELECT_COMPLETED = """
+            FROM Task t
+            WHERE t.done = :fdone
+            """;
+    private static final String UPDATE = """
+            UPDATE Task t
+            SET t.description = :fdescription, t.done = :fdone, t.priority = :fpriority, t.user = :fuser, t.categoryList = :fcategoryList
+            WHERE t.id = :fId
+            """;
+    private static final String UPDATE_DONE_STATE = """
+            UPDATE Task t
+            SET t.done = true
+            WHERE t.id = :fId
+            """;
+    private static final String DELETE = """
+            DELETE Task t
+            WHERE t.id = :fId
+            """;
+
+    public TaskDBStore(CRUDStore crudRepository, PriorityService priorityService, CategoryService categoryService) {
         this.crudRepository = crudRepository;
         this.priorityService = priorityService;
+        this.categoryService = categoryService;
     }
 
     public boolean add(Task task) {
@@ -44,7 +69,7 @@ public class TaskDBStore {
     }
 
     public List<Task> findAll() {
-        return crudRepository.query(SELECT_ALL, Task.class);
+        return crudRepository.query(SELECT_ALL_WITH_PRIORITY_AND_CATEGORY, Task.class);
     }
 
     public List<Task> sortTasks(boolean done) {
@@ -60,6 +85,8 @@ public class TaskDBStore {
                     "fdescription", task.getDescription(),
                     "fdone", task.isDone(),
                     "fpriority", task.getPriority(),
+                    "fuser", task.getUser(),
+                    "fcategoryList", task.getCategoryList(),
                     "fId", task.getId()));
             rsl = true;
         }

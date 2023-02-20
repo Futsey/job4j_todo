@@ -32,7 +32,7 @@ public class Task {
     private Priority priority;
 
     @Builder.Default
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
     @JoinTable(
             name = "todo_tasks_categories",
             joinColumns = @JoinColumn(name = "task_id"),

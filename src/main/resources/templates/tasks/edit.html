@@ -101,7 +101,7 @@
 
         <td>
           <div class="mb-3">
-            <select class="form-control" id="category" name="category.id" multiple="multiple">
+            <select class="form-control" name="category" id="category.id"  multiple="multiple">
               <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
             </select>
           </div>

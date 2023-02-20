@@ -14,12 +14,31 @@ public class PriorityDBStore {
 
     private final CRUDStore crudRepository;
     private static final Logger LOG = LoggerFactory.getLogger(TaskDBStore.class.getName());
-    private static final String SELECT_ALL = "FROM Priority";
-    private static final String UPDATE = "UPDATE Priority SET name = :fname, position = :fposition WHERE id = :fId";
-    private static final String SORT_URGENTLY =
-            "UPDATE tasks SET priority_id = (SELECT id FROM priorities WHERE name = :furgently)";
-    private static final String DELETE = "DELETE Priority WHERE id = :fId";
-    private static final String SELECT_BY_ID = "FROM Priority WHERE id = :fId";
+    private static final String SELECT_ALL = """
+            FROM Priority
+            """;
+    private static final String UPDATE = """
+            UPDATE Priority
+            SET name = :fname, position = :fposition
+            WHERE id = :fId
+            """;
+    private static final String SORT_URGENTLY = """
+            UPDATE Task
+            SET priority.id =
+            (
+            SELECT id
+            FROM Priority
+            WHERE name = :furgently
+            )
+            """;
+    private static final String DELETE = """
+            DELETE Priority
+            WHERE id = :fId
+            """;
+    private static final String SELECT_BY_ID = """
+            FROM Priority
+            WHERE id = :fId
+            """;
 
     public PriorityDBStore(CRUDStore crudRepository) {
         this.crudRepository = crudRepository;

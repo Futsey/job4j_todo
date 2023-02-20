@@ -3,8 +3,6 @@ package todo.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "todo_categories")
@@ -12,7 +10,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "taskList")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Builder
 public class Category {
@@ -24,8 +21,4 @@ public class Category {
     @Column(nullable = false, unique = true)
     @EqualsAndHashCode.Include
     private String name;
-
-    @Builder.Default
-    @ManyToMany(mappedBy = "categoryList")
-    private List<Task> taskList = new ArrayList<>();
 }
