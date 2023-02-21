@@ -13,6 +13,9 @@ import java.util.List;
 @Setter
 @ToString(exclude = "user, priority, categoryList")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Task {
 
     @Id

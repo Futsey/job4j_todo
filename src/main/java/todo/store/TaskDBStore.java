@@ -3,7 +3,9 @@ package todo.store;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import todo.model.Category;
 import todo.model.Task;
+import todo.model.User;
 import todo.service.CategoryService;
 import todo.service.PriorityService;
 
@@ -20,13 +22,13 @@ public class TaskDBStore {
     private static final Logger LOG = LoggerFactory.getLogger(TaskDBStore.class.getName());
 
     private static final String SELECT_ALL_WITH_PRIORITY_AND_CATEGORY = """
-            SELECT distinct t FROM Task t 
+            SELECT distinct t FROM Task t
             JOIN FETCH t.priority
             JOIN FETCH t.categoryList
             """;
     private static final String SELECT_BY_ID = """
-            FROM Task t 
-            JOIN FETCH t.priority 
+            FROM Task t
+            JOIN FETCH t.priority
             JOIN FETCH t.categoryList
             WHERE t.id = :fId
             """;
@@ -68,6 +70,10 @@ public class TaskDBStore {
         return priorityService.findById(task.getPriority().getId()).isPresent();
     }
 
+    public boolean isTaskPresent(Task task) {
+        return Optional.of(task).isPresent();
+    }
+
     public List<Task> findAll() {
         return crudRepository.query(SELECT_ALL_WITH_PRIORITY_AND_CATEGORY, Task.class);
     }
@@ -80,17 +86,23 @@ public class TaskDBStore {
 
     public boolean update(Task task) {
         boolean rsl = false;
-        if (isPriorityPresent(task)) {
-            crudRepository.run(UPDATE, Map.of(
-                    "fdescription", task.getDescription(),
-                    "fdone", task.isDone(),
-                    "fpriority", task.getPriority(),
-                    "fuser", task.getUser(),
-                    "fcategoryList", task.getCategoryList(),
-                    "fId", task.getId()));
+        if (isPriorityPresent(task) && isTaskPresent(task)) {
+            merge(task);
             rsl = true;
         }
         return rsl;
+    }
+
+    public Task merge(Task task) {
+        crudRepository.run(tmpTask -> tmpTask.merge(task));
+        return Task.builder()
+                .id(task.getId())
+                .description(task.getDescription())
+                .done(task.isDone())
+                .priority(task.getPriority())
+                .user(task.getUser())
+                .categoryList(task.getCategoryList())
+                .build();
     }
 
     public boolean isDone(int id) {

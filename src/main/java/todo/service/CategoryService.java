@@ -1,5 +1,7 @@
 package todo.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import todo.model.Category;
 import todo.store.CategoryDBStore;
@@ -11,6 +13,7 @@ import java.util.Optional;
 public class CategoryService {
 
     private final CategoryDBStore store;
+    private static final Logger LOG = LoggerFactory.getLogger(CategoryService.class.getName());
 
     public CategoryService(CategoryDBStore store) {
         this.store = store;
@@ -25,6 +28,10 @@ public class CategoryService {
     }
 
     public List<Category> findAllById(List<Long> categoryIdList) {
-        return store.findAllById(categoryIdList);
+        List<Category> categoryList = store.findAllById(categoryIdList);
+        if (categoryIdList.size() != categoryList.size()) {
+            LOG.error("List size mismatch: CategoryService{ findAllById() }");
+        }
+        return categoryList;
     }
 }
