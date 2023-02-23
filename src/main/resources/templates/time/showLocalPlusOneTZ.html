@@ -15,24 +15,29 @@
 
     <title>JOB4J Todo</title>
 
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+
 </head>
 
 <body>
 
-<div class="container">
-
-    <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5 rounded float-start" data-mdb-ripple-color="light">
-        <div class="p-3">
-            <div class="text-center" style="height: 10vh;">
-                <h1 class="mt-5 position-absolute bottom-0 end-50 display-1 mx-auto d-block" style="">JOB4J TODO list</h1>
-            </div>
-        </div>
-        <img src="/logo.png" class="img-fluid" style="height: 80vh;"/>
-        <a href="#!">
-            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-        </a>
-
-    </div>
+<div class="container" style="height: 90px; margin-bottom: 30px">
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
@@ -80,6 +85,54 @@
             </div>
         </div>
     </nav>
+
+</div>
+
+<div class="container">
+
+    <h2 class="text-center" style="margin-bottom: 40px">Time zones</h2>
+    <table class="table" style="height: 100px; margin-bottom: 100px">
+        <thead>
+        <tr>
+            <th scope="col" class="text-center">UTC</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="text-center" >
+            <td class="text-center" style = "border: aliceblue; color: darkblue">
+            <h1 class="display-6" th:text="${UTC}"></h1>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="table" style="height: 100px; margin-bottom: 100px">
+        <thead>
+        <tr>
+            <th scope="col" class="text-center">Local time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="text-center" >
+            <td class="text-center" style = "border: aliceblue; color: darkblue">
+                <h1 class="display-6" th:text="${currentTimeZone}"></h1>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col" class="text-center">Selected time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="text-center" >
+            <td class="text-center" style = "border: aliceblue; color: darkblue">
+                <h1 class="display-6" th:text="${selectedTimeZone}"></h1>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
 </div>
 

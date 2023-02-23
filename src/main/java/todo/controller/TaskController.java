@@ -12,11 +12,11 @@ import todo.service.PriorityService;
 import todo.service.TaskService;
 import javax.servlet.http.HttpSession;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static todo.util.HttpSessionUtil.setGuest;
+
 
 @Controller
 @AllArgsConstructor

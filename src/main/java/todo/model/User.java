@@ -4,11 +4,13 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.TimeZone;
 
 @Entity
 @Table(name = "todo_users")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -20,7 +22,6 @@ public class User {
     private String password;
     private LocalDateTime created = LocalDateTime.now();
 
-    public User() {
-
-    }
+    @Column(name = "user_zone")
+    private LocalDateTime userZone;
 }

@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import static todo.util.HttpSessionUtil.setGuest;
 
+
 @Controller
 @AllArgsConstructor
 @RequestMapping("/users")
@@ -24,7 +25,7 @@ public class UserController {
     public String addUser(Model model, HttpSession session) {
         setGuest(model, session);
         model.addAttribute("user", new User(0, "Новый пользователь", "Введите электронную почту",
-                "Введите логин", "Введите пароль", LocalDateTime.now()));
+                "Введите логин", "Введите пароль", LocalDateTime.now(), LocalDateTime.now()));
         return "users/addUser";
     }
 
