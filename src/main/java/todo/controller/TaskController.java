@@ -10,13 +10,15 @@ import todo.model.User;
 import todo.service.CategoryService;
 import todo.service.PriorityService;
 import todo.service.TaskService;
+import todo.service.TimeZoneService;
+
 import javax.servlet.http.HttpSession;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import static todo.util.HttpSessionUtil.setGuest;
-
 
 @Controller
 @AllArgsConstructor
@@ -26,6 +28,7 @@ public class TaskController {
     private final TaskService taskService;
     private final PriorityService priorityService;
     private final CategoryService categoryService;
+    private final TimeZoneService timeZoneService;
 
     @GetMapping()
     public String list(Model model, HttpSession session) {
@@ -63,16 +66,21 @@ public class TaskController {
         taskDb.ifPresent(task -> model.addAttribute("task", task));
         model.addAttribute("priorities", priorityService.findAll());
         model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("timezones", timeZoneService.findAllTZ());
         setGuest(model, session);
         return "tasks/edit";
     }
 
     @PostMapping("/edit")
     public String editTask(@ModelAttribute Task task,
-                           @RequestParam(value = "category") List<Long> categoryId, HttpSession session) {
+                           @RequestParam(value = "category", required = false) List<Long> categoryId,
+                           @RequestParam(value = "timezone", required = false) String timeZone,
+                           HttpSession session) {
         String rsl = "redirect:/tasks";
         User user = (User) session.getAttribute("user");
+        user.setUserZone(timeZoneService.findSelectedTZ(timeZone));
         task.setUser(user);
+//        task.setCreated(task.getCreated().atZone(getZoneID(timeZone)).toLocalDateTime());
         List<Category> catTempList = categoryService.findAllById(categoryId);
         task.setCategoryList(catTempList);
         if (!taskService.update(task)) {
@@ -104,6 +112,7 @@ public class TaskController {
         String rsl = "redirect:/tasks";
         User user = (User) session.getAttribute("user");
         task.setUser(user);
+        task.setCreated(LocalDateTime.now());
         task.setCategoryList(categoryService.findAllById(categoryId));
         if (!taskService.add(task)) {
             rsl = "/createFail";

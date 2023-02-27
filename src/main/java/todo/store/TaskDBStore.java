@@ -3,9 +3,7 @@ package todo.store;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import todo.model.Category;
 import todo.model.Task;
-import todo.model.User;
 import todo.service.CategoryService;
 import todo.service.PriorityService;
 
@@ -98,6 +96,7 @@ public class TaskDBStore {
         return Task.builder()
                 .id(task.getId())
                 .description(task.getDescription())
+                .created(task.getCreated())
                 .done(task.isDone())
                 .priority(task.getPriority())
                 .user(task.getUser())

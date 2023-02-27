@@ -74,6 +74,8 @@
         <th scope="col">Status</th>
         <th scope="col">Priority</th>
         <th scope="col">Category</th>
+        <th scope="col">Create date</th>
+        <th scope="col">Time Zone</th>
         <th scope="col">Actions</th>
       </tr>
       </thead>
@@ -94,7 +96,9 @@
         <td>
           <div class="mb-3">
             <select class="form-control" id="priority" name="priority.id">
-              <option th:each="priority : ${priorities}" th:value="${priority.id}" th:text="${priority.name}"></option>
+              <option th:each="priority : ${priorities}"
+                      th:value="${priority.id}"
+                      th:text="${priority.name}"></option>
             </select>
           </div>
         </td>
@@ -102,7 +106,23 @@
         <td>
           <div class="mb-3">
             <select class="form-control" name="category" id="category.id"  multiple="multiple">
-              <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+              <option th:each="category : ${categories}"
+                      th:value="${category.id}"
+                      th:text="${category.name}"></option>
+            </select>
+          </div>
+        </td>
+
+        <td th:text="${#temporals.format(task.created, 'dd-MM-yyyy HH:mm')}"></td>
+
+        <td>
+          <div class="form-group">
+            <select class="form-control selectpicker" name="timezone" id="timezone">
+              <option value="">Nothing selected</option>
+              <option th:each="zone : ${timezones}"
+                      th:value="${zone}"
+                      th:text="${zone}">
+              </option>
             </select>
           </div>
         </td>

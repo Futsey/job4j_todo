@@ -77,6 +77,15 @@
                 <input type="text" class="form-control" name="login" id="login" th:placeholder="*{login}">
                 <label for="password">Пароль</label>
                 <input type="text" class="form-control" name="password" id="password" th:placeholder="*{password}">
+                <label for="password">Часовой пояс</label>
+                <select class="form-control selectpicker" name="timezone" id="timezone">
+                    <option value="">Выберите часовой пояс</option>
+                    <option th:each="zone : ${timezones}"
+                            th:value="${zone}"
+                            th:text="${zone}">
+                    </option>
+                </select>
+<!--                <input type="text" class="form-control" name="timezone" id="timezone" th:placeholder="*{userZone}">-->
             </div>
             <button type="submit" class="btn btn-primary">Регистрация</button>
         </form>

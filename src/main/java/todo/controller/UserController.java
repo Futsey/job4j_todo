@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import todo.model.User;
+import todo.service.TimeZoneService;
 import todo.service.UserService;
 
 import javax.servlet.http.HttpSession;
@@ -20,17 +21,22 @@ import static todo.util.HttpSessionUtil.setGuest;
 public class UserController {
 
     private final UserService userService;
+    private final TimeZoneService timeZoneService;
 
     @GetMapping("/addUser")
     public String addUser(Model model, HttpSession session) {
         setGuest(model, session);
         model.addAttribute("user", new User(0, "Новый пользователь", "Введите электронную почту",
                 "Введите логин", "Введите пароль", LocalDateTime.now(), LocalDateTime.now()));
+        model.addAttribute("timezones", timeZoneService.findAllTZ());
         return "users/addUser";
     }
 
     @PostMapping("/registration")
-    public String registration(Model model, @ModelAttribute User user) {
+    public String registration(Model model, @ModelAttribute User user,
+                               @RequestParam(value = "timezone", required = false) String timeZone) {
+        user.setCreated(LocalDateTime.now());
+        user.setUserZone(timeZoneService.findSelectedTZ(timeZone));
         Optional<User> regUser = userService.add(user);
         if (regUser.isEmpty()) {
             model.addAttribute("message",
