@@ -14,7 +14,6 @@ import todo.service.TimeZoneService;
 
 import javax.servlet.http.HttpSession;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,7 +79,6 @@ public class TaskController {
         User user = (User) session.getAttribute("user");
         user.setUserZone(timeZoneService.findSelectedTZ(timeZone));
         task.setUser(user);
-//        task.setCreated(task.getCreated().atZone(getZoneID(timeZone)).toLocalDateTime());
         List<Category> catTempList = categoryService.findAllById(categoryId);
         task.setCategoryList(catTempList);
         if (!taskService.update(task)) {
@@ -112,7 +110,6 @@ public class TaskController {
         String rsl = "redirect:/tasks";
         User user = (User) session.getAttribute("user");
         task.setUser(user);
-        task.setCreated(LocalDateTime.now());
         task.setCategoryList(categoryService.findAllById(categoryId));
         if (!taskService.add(task)) {
             rsl = "/createFail";

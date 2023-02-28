@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.TimeZone;
 
 @Entity
 @Table(name = "todo_users")
@@ -22,5 +23,5 @@ public class User {
     private LocalDateTime created;
 
     @Column(name = "user_zone")
-    private LocalDateTime userZone;
+    private String userZone;
 }

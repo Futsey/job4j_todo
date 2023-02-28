@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import todo.model.Task;
 import todo.store.TaskDBStore;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,12 +12,15 @@ import java.util.Optional;
 public class TaskService {
 
     private final TaskDBStore store;
+    private final TimeZoneService timeZoneService;
 
-    public TaskService(TaskDBStore store) {
+    public TaskService(TaskDBStore store, TimeZoneService timeZoneService) {
         this.store = store;
+        this.timeZoneService = timeZoneService;
     }
 
     public boolean add(Task task) {
+        task.setCreated(LocalDateTime.now());
         return store.add(task);
     }
 
@@ -33,7 +37,11 @@ public class TaskService {
     }
 
     public List<Task> findAll() {
-        return store.findAll();
+        List<Task> taskList = store.findAll();
+        for (Task task : taskList) {
+            task.setCreated(timeZoneService.selectTZ(task.getUser(), task));
+        }
+        return taskList;
     }
 
     public List<Task> sortTasks(boolean done) {

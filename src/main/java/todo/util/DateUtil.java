@@ -1,100 +1,56 @@
 package todo.util;
 
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import todo.store.CRUDStore;
-import todo.store.UserDBStore;
+import todo.model.Task;
+import todo.model.User;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
+import java.time.*;
+import java.util.*;
 
 public final class DateUtil {
+
+    private static final String PATTERN = "HH:mm yyyy-MM-dd";
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat(PATTERN);
 
     private DateUtil() {
     }
 
-    public static LocalDateTime convertToDate(String timeZone) {
-        String tmp = showSelectedTZ(timeZone);
-        return ZonedDateTime.now(ZoneId.of(tmp)).toLocalDateTime();
+    public static String getTZ(String timeZone) {
+        ZonedDateTime zdt = ZonedDateTime.parse(splitTimeZoneString(timeZone).getId());
+        System.out.println(zdt);
+
+        return splitTimeZoneString(timeZone).getId();
     }
 
-    public static String showLocalTZ() {
-        Date today = new Date();
-        TimeZone userTZ = TimeZone.getDefault();
-        DateFormat df = new SimpleDateFormat("HH:mm yyyy-MM-dd");
-        df.setTimeZone(userTZ);
-        String tmpDate = df.format(today);
-
-        StringBuilder stringBuilder = new StringBuilder("Current TimeZone : \"");
-        stringBuilder.append(userTZ.getID());
-        stringBuilder.append("\" (");
-        stringBuilder.append(userTZ.getDisplayName());
-        stringBuilder.append(") Time\\Date: ");
-        stringBuilder.append(tmpDate);
-
-        return String.valueOf(stringBuilder);
-    }
-
-    public static ZoneId getZoneID(String timeZone) {
+    public static ZoneId splitTimeZoneString(String timeZone) {
         String result = timeZone.split(":")[0];
         TimeZone userTZ = TimeZone.getTimeZone(result.trim());
         return userTZ.toZoneId();
     }
 
-    public static String showSelectedTZ(String timeZone) {
-        String result = timeZone.split(":")[0];
-        Date today = new Date();
-        TimeZone userTZ = TimeZone.getTimeZone(result.trim());
-        DateFormat df = new SimpleDateFormat("HH:mm yyyy-MM-dd");
-        df.setTimeZone(userTZ);
-        String tmpDate = df.format(today);
+    public static LocalDateTime setSelectedTZ(User user, Task task) {
+        ZonedDateTime zonedDateTime;
+            if (user.getUserZone() == null) {
+                zonedDateTime = ZonedDateTime.of(task.getCreated(), TimeZone.getDefault().toZoneId());
+            } else {
+                zonedDateTime = ZonedDateTime.of(task.getCreated(),
+                                TimeZone.getDefault().toZoneId()).withZoneSameInstant(ZoneId.of(String.valueOf(user.getUserZone())));
+            }
+            return zonedDateTime.toLocalDateTime();
+    }
 
-        StringBuilder stringBuilder = new StringBuilder("Current TimeZone : \"");
-        stringBuilder.append(userTZ.getID());
-        stringBuilder.append("\" (");
-        stringBuilder.append(userTZ.getDisplayName());
-        stringBuilder.append(") Time\\Date: ");
-        stringBuilder.append(tmpDate);
-
-        return userTZ.getID();
+    public static String showLocalTZ() {
+        String[] tzArgs = setTZArgs(String.valueOf(TimeZone.getDefault()));
+        return buildSBForm(tzArgs[0], tzArgs[1], tzArgs[2]);
     }
 
     public static String[] showLocalPlusOneTZ(String timeZone) {
         String[] tzArray = new String[2];
-        Date today = new Date();
-        DateFormat df = new SimpleDateFormat("HH:mm yyyy-MM-dd");
-        TimeZone upperTZ = TimeZone.getDefault();
-        TimeZone lowerTZ = TimeZone.getTimeZone(timeZone);
-
-        df.setTimeZone(upperTZ);
-        String localDate = df.format(today);
-
-        StringBuilder stringBuilder = new StringBuilder("Current TimeZone : \"");
-        stringBuilder.append(upperTZ.getID());
-        stringBuilder.append("\" (");
-        stringBuilder.append(upperTZ.getDisplayName());
-        stringBuilder.append(") Time\\Date: ");
-        stringBuilder.append(localDate);
-        tzArray[0] = String.valueOf(stringBuilder);
-
-        stringBuilder.setLength(0);
-        df.setTimeZone(TimeZone.getTimeZone(timeZone));
-        String tmpDate = df.format(today);
-
-        stringBuilder.append(lowerTZ.getID());
-        stringBuilder.append("\" (");
-        stringBuilder.append(lowerTZ.getDisplayName());
-        stringBuilder.append(") Time\\Date: ");
-        stringBuilder.append(tmpDate);
-        tzArray[1] = String.valueOf(stringBuilder);
-
+        String[] tzArgs = setTZArgs(String.valueOf(TimeZone.getDefault()));
+        tzArray[0] = buildSBForm(tzArgs[0], tzArgs[1], tzArgs[2]);
+        String[] secondTZArgs = setTZArgs(timeZone);
+        tzArray[1] = buildSBForm(secondTZArgs[0], secondTZArgs[1], secondTZArgs[2]);
         return tzArray;
     }
 
@@ -116,32 +72,29 @@ public final class DateUtil {
     }
 
     public static String showUTCTZ() {
-        Date today = new Date();
-        TimeZone userTZ = TimeZone.getTimeZone("UTC");
-        DateFormat df = new SimpleDateFormat("HH:mm yyyy-MM-dd");
-        df.setTimeZone(userTZ);
-        String tmpDate = df.format(today);
-
-        StringBuilder stringBuilder = new StringBuilder("Current TimeZone : \"");
-        stringBuilder.append(userTZ.getID());
-        stringBuilder.append("\" (");
-        stringBuilder.append(userTZ.getDisplayName());
-        stringBuilder.append(") Time\\Date: ");
-        stringBuilder.append(tmpDate);
-
-        return String.valueOf(stringBuilder);
+        String[] tzArgs = setTZArgs("UTC");
+        return buildSBForm(tzArgs[0], tzArgs[1], tzArgs[2]);
     }
 
-    public static void main(String[] args) {
-        var registry = new StandardServiceRegistryBuilder()
-                .configure().build();
-        try (var sf = new MetadataSources(registry)
-                .buildMetadata().buildSessionFactory()) {
-            var session = sf.openSession();
-            session.beginTransaction();
-            System.out.println("------------------------------");
+    public static String[] setTZArgs(String timeZone) {
+        String[] argsArray = new String[3];
+        Date today = new Date();
+        TimeZone userTZ = TimeZone.getTimeZone(timeZone);
+        DATE_FORMAT.setTimeZone(userTZ);
+        String tmpDate = DATE_FORMAT.format(today);
+        argsArray[0] = userTZ.getID();
+        argsArray[1] = userTZ.getDisplayName();
+        argsArray[2] = tmpDate;
+        return argsArray;
+    }
 
-            System.out.println("------------------------------");
-        }
+    public static String buildSBForm(String tzID, String name, String date) {
+        StringBuilder stringBuilder = new StringBuilder("Current TimeZone : \"");
+        stringBuilder.append(tzID);
+        stringBuilder.append("\" (");
+        stringBuilder.append(name);
+        stringBuilder.append(") Time\\Date: ");
+        stringBuilder.append(date);
+        return String.valueOf(stringBuilder);
     }
 }

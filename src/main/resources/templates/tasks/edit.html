@@ -82,6 +82,7 @@
 
       <form th:action="@{/tasks/edit}" method="POST" th:object="${task}">
         <input type="hidden" name="id" th:field="*{id}"/>
+        <input type="hidden" name="created" th:field="*{created}"/>
         <td>
           <input type="text" name="description" id="description" th:field="*{description}">
         </td>
