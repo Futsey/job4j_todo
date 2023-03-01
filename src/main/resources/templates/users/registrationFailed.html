@@ -58,6 +58,9 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" th:href="@{/tasks/unDone}">Undone list</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/time/timeZoneAction}">Time zone</a>
+                </li>
                 <li class="nav-item position-absolute top-0 end-0">
                     <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/users/loginPage}">
                         <span th:text="${user.name}"></span>

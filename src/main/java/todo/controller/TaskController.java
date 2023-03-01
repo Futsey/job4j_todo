@@ -73,11 +73,9 @@ public class TaskController {
     @PostMapping("/edit")
     public String editTask(@ModelAttribute Task task,
                            @RequestParam(value = "category", required = false) List<Long> categoryId,
-                           @RequestParam(value = "timezone", required = false) String timeZone,
                            HttpSession session) {
         String rsl = "redirect:/tasks";
         User user = (User) session.getAttribute("user");
-        user.setUserZone(timeZoneService.findSelectedTZ(timeZone));
         task.setUser(user);
         List<Category> catTempList = categoryService.findAllById(categoryId);
         task.setCategoryList(catTempList);

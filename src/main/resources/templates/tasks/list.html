@@ -44,6 +44,9 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" th:href="@{/tasks/unDone}">Undone list</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/time/timeZoneAction}">Time zone</a>
+                    </li>
                     <li class="nav-item position-absolute top-0 end-0">
                         <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/users/loginPage}">
                             <span th:text="${user.name}"></span>
@@ -81,30 +84,32 @@
         <table class="table table-hover table-bordered border-primary">
             <thead>
             <tr  class="table-active">
-                <th scope="col">#</th>
-                <th scope="col">Description</th>
-                <th scope="col">Create date</th>
-                <th scope="col">User</th>
-                <th scope="col">Status</th>
-                <th scope="col">Priority</th>
-                <th scope="col">Category</th>
+                <th scope="col" class="text-center">#</th>
+                <th scope="col" class="text-center">Description</th>
+                <th scope="col" class="text-center">Create date</th>
+                <th scope="col" class="text-center">User</th>
+                <th scope="col" class="text-center">Status</th>
+                <th scope="col" class="text-center">Priority</th>
+                <th scope="col" class="text-center">Category</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="task: ${tasks}">
                 <td th:text="${task.id}" />
 
-                <td>
-                    <a th:href="@{|/tasks/info/${task.id}|}">
+                <td class="text-center">
+                    <a class="text-center" th:href="@{|/tasks/info/${task.id}|}">
                         <i class="fa fa-edit"></i>
                         <span th:text="${task.description}"></span>
                     </a>
                 </td>
 
-                <td th:text="${#temporals.format(task.created, 'dd-MM-yyyy HH:mm')}">
+                <td >
+                    <div class="text-center" th:text="${#temporals.format(task.created, 'dd-MM-yyyy HH:mm')}"/>
+                    <div class="text-center" th:text="${task.user.userZone}"/>
                 </td>
 
-                <td>
+                <td class="text-center">
                     <a th:href="@{|/tasks/info/${task.id}|}">
                         <i class="fa fa-edit"></i>
                         <span th:text="${task.user.name}"></span>
@@ -124,7 +129,7 @@
 
                 <td th:text="${task.priority.name}"/>
 
-                <td>
+                <td class="text-center">
                     <ul class="list-group" th:each="category : ${task.categoryList}">
                         <li class="list-group-item" style = "border: aliceblue; color: navy" th:text="${category.name}"/>
                     </ul>

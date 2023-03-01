@@ -17,5 +17,9 @@
     <include file="scripts/007_ddl_create_todo_tasks_categories_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/008_dml_insert_todo_categories.sql" relativeToChangelogFile="true"/>
     <include file="scripts/009_ddl_alter_todo_users_timezone.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/010_ddl_drop_todo_users_timezone.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/011_ddl_alter_todo_users_add_timezone.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/012_ddl_alter_todo_users_created.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/013_dml_insert_todo_priorities.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

@@ -17,9 +17,6 @@ public final class DateUtil {
     }
 
     public static String getTZ(String timeZone) {
-        ZonedDateTime zdt = ZonedDateTime.parse(splitTimeZoneString(timeZone).getId());
-        System.out.println(zdt);
-
         return splitTimeZoneString(timeZone).getId();
     }
 
@@ -41,7 +38,7 @@ public final class DateUtil {
     }
 
     public static String showLocalTZ() {
-        String[] tzArgs = setTZArgs(String.valueOf(TimeZone.getDefault()));
+        String[] tzArgs = setTZArgs(TimeZone.getDefault().getID());
         return buildSBForm(tzArgs[0], tzArgs[1], tzArgs[2]);
     }
 

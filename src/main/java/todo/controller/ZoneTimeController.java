@@ -42,7 +42,9 @@ public class ZoneTimeController {
     @GetMapping("/showLocalTZ")
     public String showLocalTime(Model model, HttpSession session) {
         setGuest(model, session);
+        String utcTimeZone = showUTCTZ();
         String timeZone = showLocalTZ();
+        model.addAttribute("UTC", utcTimeZone);
         model.addAttribute("timeZone", timeZone);
         return "time/showLocalTZ";
     }

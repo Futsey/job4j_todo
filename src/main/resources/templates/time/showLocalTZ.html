@@ -16,16 +16,20 @@
   <title>JOB4J Todo</title>
 
   <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
 
-    .btn-circle {
-      width: 170px;
-      height: 70px;
-      border-radius: 35px;
-      text-align: center;
-      padding-left: 0;
-      padding-right: 0;
-      font-size: 16px;
-      white-space: normal; /* восстанавливаем свойству значение по умолчанию */
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
     }
   </style>
 
@@ -86,25 +90,36 @@
 
 <div class="container">
 
-  <div class="table-responsive" style="margin-top: 80px">
-    <table class="table">
-      <h3>Time zones</h3>
-      <thead>
-      <tr>
-        <td>Local time</td>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td>
-          <ul class="list-group" th:text="${timeZone}">
-            <li class="list-group-item" style = "border: aliceblue; color: blue" th:text="${timeZone}"/>
-          </ul>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+  <h2 class="text-center" style="margin-bottom: 40px">Time zones</h2>
+  <table class="table" style="height: 100px; margin-bottom: 100px">
+    <thead>
+    <tr>
+      <th scope="col" class="text-center">UTC</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="text-center" >
+      <td class="text-center" style = "border: aliceblue; color: darkblue">
+        <h1 class="display-6" th:text="${UTC}"></h1>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <table class="table" style="height: 100px; margin-bottom: 100px">
+    <thead>
+    <tr>
+      <th scope="col" class="text-center">Local time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="text-center" >
+      <td class="text-center" style = "border: aliceblue; color: darkblue">
+        <h1 class="display-6" th:text="${timeZone}"></h1>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
 </div>
 
 </body>

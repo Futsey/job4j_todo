@@ -75,7 +75,6 @@
         <th scope="col">Priority</th>
         <th scope="col">Category</th>
         <th scope="col">Create date</th>
-        <th scope="col">Time Zone</th>
         <th scope="col">Actions</th>
       </tr>
       </thead>
@@ -115,18 +114,6 @@
         </td>
 
         <td th:text="${#temporals.format(task.created, 'dd-MM-yyyy HH:mm')}"></td>
-
-        <td>
-          <div class="form-group">
-            <select class="form-control selectpicker" name="timezone" id="timezone">
-              <option value="">Nothing selected</option>
-              <option th:each="zone : ${timezones}"
-                      th:value="${zone}"
-                      th:text="${zone}">
-              </option>
-            </select>
-          </div>
-        </td>
 
         <td>
           <div class="d-grid gap-2 mx-auto">
