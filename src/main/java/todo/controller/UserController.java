@@ -49,6 +49,7 @@ public class UserController {
     @GetMapping("/fail")
     public String fail(Model model, HttpSession session) {
         setGuest(model, session);
+        model.addAttribute("user", new User());
         model.addAttribute("fail", "Registration failed");
         return "/users/registrationFailed";
     }
@@ -72,8 +73,7 @@ public class UserController {
     public String loginUser(@ModelAttribute User user, Model model, HttpSession session) {
         var userDb = userService.findByLoginAndPassword(user.getLogin(), user.getPassword());
         if (userDb.isEmpty()) {
-            model.addAttribute("fail", "Почта или пароль введены неверно");
-            return "redirect:/loginPage?fail=true";
+            return "redirect:/users/loginPage?fail=true";
         }
         session.setAttribute("user", userDb.get());
         return "redirect:/index";

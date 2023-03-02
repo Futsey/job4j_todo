@@ -44,7 +44,7 @@ public final class DateUtil {
 
     public static String[] showLocalPlusOneTZ(String timeZone) {
         String[] tzArray = new String[2];
-        String[] tzArgs = setTZArgs(String.valueOf(TimeZone.getDefault()));
+        String[] tzArgs = setTZArgs(TimeZone.getDefault().getID());
         tzArray[0] = buildSBForm(tzArgs[0], tzArgs[1], tzArgs[2]);
         String[] secondTZArgs = setTZArgs(timeZone);
         tzArray[1] = buildSBForm(secondTZArgs[0], secondTZArgs[1], secondTZArgs[2]);

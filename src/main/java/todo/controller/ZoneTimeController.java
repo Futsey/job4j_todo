@@ -4,13 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import todo.model.Task;
 import todo.model.User;
 
 import javax.servlet.http.HttpSession;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 import static todo.util.DateUtil.*;
 import static todo.util.HttpSessionUtil.setGuest;
@@ -42,10 +38,8 @@ public class ZoneTimeController {
     @GetMapping("/showLocalTZ")
     public String showLocalTime(Model model, HttpSession session) {
         setGuest(model, session);
-        String utcTimeZone = showUTCTZ();
-        String timeZone = showLocalTZ();
-        model.addAttribute("UTC", utcTimeZone);
-        model.addAttribute("timeZone", timeZone);
+        model.addAttribute("UTC", showUTCTZ());
+        model.addAttribute("timeZone", showLocalTZ());
         return "time/showLocalTZ";
     }
 
@@ -61,8 +55,7 @@ public class ZoneTimeController {
         String[] twoZones = showLocalPlusOneTZ(zone);
         model.addAttribute("currentTimeZone", twoZones[0]);
         model.addAttribute("selectedTimeZone", twoZones[1]);
-        String timeZone = showUTCTZ();
-        model.addAttribute("UTC", timeZone);
+        model.addAttribute("UTC", showUTCTZ());
         return "time/showLocalPlusOneTZ";
     }
 
