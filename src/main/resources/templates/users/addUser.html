@@ -84,9 +84,8 @@
                 <select class="form-control selectpicker" name="timezone" id="timezone">
                     <option value="">Выберите часовой пояс</option>
                     <option th:each="zone : ${timezones}"
-                            th:value="${zone}"
-                            th:text="${zone}">
-                    </option>
+                            th:value="${zone.getID()}"
+                            th:text="|${zone.getID()} : ${zone.getDisplayName()}|">
                 </select>
 <!--                <input type="text" class="form-control" name="timezone" id="timezone" th:placeholder="*{userZone}">-->
             </div>

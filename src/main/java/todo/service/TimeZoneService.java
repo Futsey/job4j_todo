@@ -6,13 +6,14 @@ import todo.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.TimeZone;
 
 import static todo.util.DateUtil.*;
 
 @Service
 public class TimeZoneService {
 
-    public List<String> findAllTZ() {
+    public List<TimeZone> findAllTZ() {
         return showTimeZoneList();
     }
 

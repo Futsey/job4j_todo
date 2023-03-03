@@ -17,13 +17,7 @@ public final class DateUtil {
     }
 
     public static String getTZ(String timeZone) {
-        return splitTimeZoneString(timeZone).getId();
-    }
-
-    public static ZoneId splitTimeZoneString(String timeZone) {
-        String result = timeZone.split(":")[0];
-        TimeZone userTZ = TimeZone.getTimeZone(result.trim());
-        return userTZ.toZoneId();
+        return TimeZone.getTimeZone(timeZone).getID();
     }
 
     public static LocalDateTime setSelectedTZ(User user, Task task) {
@@ -51,21 +45,12 @@ public final class DateUtil {
         return tzArray;
     }
 
-    public static List<String> showTimeZoneList() {
+    public static List<TimeZone> showTimeZoneList() {
         var zones = new ArrayList<TimeZone>();
-        List<String> zoneList = new ArrayList<>();
         for (String timeId : TimeZone.getAvailableIDs()) {
-
             zones.add(TimeZone.getTimeZone(timeId));
         }
-        for (TimeZone zone : zones) {
-            StringBuilder tmp = new StringBuilder(zone.getID());
-            tmp.append(" : ");
-            tmp.append(zone.getDisplayName());
-            zoneList.add(String.valueOf(tmp));
-            tmp.delete(0, 2);
-        }
-        return zoneList;
+        return zones;
     }
 
     public static String showUTCTZ() {
